@@ -9,7 +9,7 @@ public class AdminSeeder(UserManager<User> userManager): IDbSeeder<UsersDbContex
 {
     public async Task SeedAsync(UsersDbContext context)
     {
-        var user = new User("09352760765")
+        var user = new User("09333333333")
         {
             Name = "Sadeq",
             Family = "Hajizadeh"
@@ -20,7 +20,7 @@ public class AdminSeeder(UserManager<User> userManager): IDbSeeder<UsersDbContex
             return;
         }
 
-        await userManager.CreateAsync(user, "123456");
+        await userManager.CreateAsync(user, "a2345g");
         await context.SaveChangesAsync();
     }
 }
