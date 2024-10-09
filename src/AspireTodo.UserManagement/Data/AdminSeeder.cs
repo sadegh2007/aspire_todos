@@ -20,7 +20,7 @@ public class AdminSeeder(UserManager<User> userManager): IDbSeeder<UsersDbContex
             return;
         }
 
-        await userManager.CreateAsync(user, "a2345g");
+        await userManager.CreateAsync(user, "A2345g");
         await context.SaveChangesAsync();
     }
 }

@@ -1,6 +1,8 @@
+using AspireTodo.Core.Shared;
+
 namespace AspireTodo.Core.Data.Abstractions;
 
 public interface ICreator
 {
-    public int CreatorId { get; set; }
+    public UserId CreatorId { get; set; }
 }

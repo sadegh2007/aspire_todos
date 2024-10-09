@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AspireTodo.Core.ExceptionHandler\AspireTodo.Core.ExceptionHandler.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj" />
       <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.Data.Abstractions\AspireTodo.Core.Data.Abstractions.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.Data\AspireTodo.Core.Data.csproj" />
@@ -20,6 +21,7 @@
       <ProjectReference Include="..\AspireTodo.Core.OpenApi\AspireTodo.Core.OpenApi.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.Shared\AspireTodo.Core.Shared.csproj" />
       <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\AspireTodo.UserManagement.Events\AspireTodo.UserManagement.Events.csproj" />
       <ProjectReference Include="..\AspireTodo.UserManagement.Shared\AspireTodo.UserManagement.Shared.csproj" />
     </ItemGroup>
 

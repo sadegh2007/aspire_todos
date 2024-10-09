@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using AspireTodo.Core.Data;
 using AspireTodo.Core.ExceptionHandler;
 using AspireTodo.Core.Identity;
+using AspireTodo.Core.MassTransit;
 using AspireTodo.Core.OpenApi;
 using AspireTodo.UserManagement;
 using AspireTodo.UserManagement.Configuration;
@@ -26,6 +27,7 @@ builder.Services
     .AddAppIdentity()
     .AddAppServices()
     .AddAppAuthentication(builder.Configuration)
+    .AddTodoMassTransit(x => x.SetConsumers())
     .AddFluentValidation();
 
 builder.Services.AddTodoExceptionHandler();

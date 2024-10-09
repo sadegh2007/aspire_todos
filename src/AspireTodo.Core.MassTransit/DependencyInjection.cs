@@ -20,7 +20,7 @@ public static class DependencyInjection
                 cfg.ConfigureEndpoints(context);
             });
         });
-        
+
         return services;
     }
 }

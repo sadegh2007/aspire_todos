@@ -13,6 +13,7 @@ public static class AccountEndpoints
         api.MapPost("login", Login).AllowAnonymous();
         api.MapPost("register", Register).AllowAnonymous();
         api.MapGet("profile", GetProfile);
+        api.MapPut("profile", UpdateProfile);
 
         return api;
     }
@@ -25,4 +26,7 @@ public static class AccountEndpoints
 
     private static async Task<UserDto> GetProfile(IAccountService accountService)
         => await accountService.GetProfileAsync();
+
+    private static async Task UpdateProfile([FromBody] UpdateProfileRequest request, IAccountService accountService)
+        => await accountService.UpdateProfileAsync(request);
 }

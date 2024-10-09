@@ -10,4 +10,10 @@ public static class AuthExtensions
         var userId = claimsPrincipal.FindFirst("sub") ?? claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
         return userId is not null ? int.Parse(userId.Value) : null;
     }
+
+    public static UserId? GetTypedUserId(this ClaimsPrincipal claimsPrincipal)
+    {
+        var userId = claimsPrincipal.FindFirst("sub") ?? claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+        return userId is not null ? UserId.Parse(userId.Value) : null;
+    }
 }

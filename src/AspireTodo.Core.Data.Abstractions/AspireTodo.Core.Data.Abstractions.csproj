@@ -1,1 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\AspireTodo.Core.Shared\AspireTodo.Core.Shared.csproj" />
+  </ItemGroup>
+</Project>

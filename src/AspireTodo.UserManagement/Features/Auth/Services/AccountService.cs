@@ -6,9 +6,13 @@ using System.Text.Json;
 using AspireTodo.Core.Exceptions;
 using AspireTodo.Core.Identity;
 using AspireTodo.Core.Shared;
+using AspireTodo.UserManagement.Data;
+using AspireTodo.UserManagement.Events;
+using AspireTodo.UserManagement.Exceptions;
 using AspireTodo.UserManagement.Features.Users.Data.Mappers;
 using AspireTodo.UserManagement.Features.Users.Domains;
 using AspireTodo.UserManagement.Shared;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,17 +21,19 @@ using Microsoft.IdentityModel.Tokens;
 namespace AspireTodo.UserManagement.Features.Auth.Services;
 
 public partial class AccountService(
-    UserManager<User> userManager, 
-    IOptions<JwtConfig> jwtConfig, 
+    UsersDbContext appDbContext,
+    UserManager<User> userManager,
+    IOptions<JwtConfig> jwtConfig,
     IHttpContextAccessor httpContextAccessor,
+    IPublishEndpoint publishEndpoint,
     ILogger<AccountService> logger
 ): IAccountService
 {
     private readonly ILogger<AccountService> _logger = logger;
-    
+
     [LoggerMessage(1, LogLevel.Information, message: "Login Request Body: {loginRequest}")]
     partial void LogLoginRequest(string loginRequest);
-    
+
     public async Task<TokenResponse> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
         LogLoginRequest(JsonSerializer.Serialize(request));
@@ -36,12 +42,12 @@ public partial class AccountService(
 
         if (user == null)
         {
-            throw new UnauthorizedAccessException("Invalid phoneNumber or password");
+            throw new IncorrectUserPasswordException();
         }
 
         if (!(await userManager.CheckPasswordAsync(user, request.Password)))
         {
-            throw new UnauthorizedAccessException("Invalid phoneNumber or password");
+            throw new IncorrectUserPasswordException();
         }
 
         var claims = GetClaims(user);
@@ -87,7 +93,22 @@ public partial class AccountService(
 
         return await userManager.Users.Select(x => x.ToDto())
                    .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken: cancellationToken)
-            ?? throw new NotFoundException("user not found!");
+            ?? throw new UserNotFound();
+    }
+
+    public async Task UpdateProfileAsync(UpdateProfileRequest request, CancellationToken cancellationToken = default)
+    {
+        var userId = httpContextAccessor.HttpContext!.User.GetUserId()!.Value;
+        var user = await userManager.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken)
+                   ?? throw new UserNotFound();
+
+        user.Name = request.Name;
+        user.Family = request.Family;
+
+        appDbContext.Users.Update(user);
+        await appDbContext.SaveChangesAsync(cancellationToken);
+
+        await publishEndpoint.Publish<UserUpdated>(new(UserId.FromInt32(user.Id), user.Name, user.Family), cancellationToken);
     }
 
     private List<Claim> GetClaims(User user)

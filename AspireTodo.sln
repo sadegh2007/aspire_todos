@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.Core.Identity", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.Core.ExceptionHandler", "src\AspireTodo.Core.ExceptionHandler\AspireTodo.Core.ExceptionHandler.csproj", "{4BC060D7-3C9B-4C2D-8794-79461740B09D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.UserManagement.Events", "src\AspireTodo.UserManagement.Events\AspireTodo.UserManagement.Events.csproj", "{EE57ADC1-0C8C-4881-BD7D-41411B1239AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{4BC060D7-3C9B-4C2D-8794-79461740B09D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC060D7-3C9B-4C2D-8794-79461740B09D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC060D7-3C9B-4C2D-8794-79461740B09D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE57ADC1-0C8C-4881-BD7D-41411B1239AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE57ADC1-0C8C-4881-BD7D-41411B1239AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE57ADC1-0C8C-4881-BD7D-41411B1239AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE57ADC1-0C8C-4881-BD7D-41411B1239AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C4547682-0D53-424A-A58F-37CD330C5EAF} = {55FC2779-17C8-420E-A706-9D8D9D0F9B18}
@@ -123,5 +129,6 @@ Global
 		{F77204E8-8221-4AED-8FA5-50D6661D6AF0} = {55FC2779-17C8-420E-A706-9D8D9D0F9B18}
 		{0845838E-AFBA-429F-8B20-DA41BA8B2FBF} = {55FC2779-17C8-420E-A706-9D8D9D0F9B18}
 		{4BC060D7-3C9B-4C2D-8794-79461740B09D} = {55FC2779-17C8-420E-A706-9D8D9D0F9B18}
+		{EE57ADC1-0C8C-4881-BD7D-41411B1239AA} = {87562E65-09F9-4BA7-B2F7-3EDD6245B93C}
 	EndGlobalSection
 EndGlobal

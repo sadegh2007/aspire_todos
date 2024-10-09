@@ -1,12 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <ItemGroup>
+        <PackageReference Include="FluentValidation.AspNetCore" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Core.Data\AspireTodo.Core.Data.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.ExceptionHandler\AspireTodo.Core.ExceptionHandler.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.Shared\AspireTodo.Core.Shared.csproj" />
       <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.OpenApi\AspireTodo.Core.OpenApi.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos.Shared\AspireTodo.Todos.Shared.csproj" />
+      <ProjectReference Include="..\AspireTodo.UserManagement.Events\AspireTodo.UserManagement.Events.csproj" />
+      <ProjectReference Include="..\AspireTodo.UserManagement.HttpClient\AspireTodo.UserManagement.HttpClient.csproj" />
     </ItemGroup>
 
     <ItemGroup>

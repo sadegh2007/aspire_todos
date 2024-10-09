@@ -18,14 +18,14 @@ public class EntityHelperSaveChangeInterceptor: SaveChangesInterceptor
                     {
                         softDelete.DeletedAt = DateTimeOffset.UtcNow;
                     }
-                    
+
                     break;
                 case EntityState.Modified:
                     if (entityEntry.Entity is IUpdatedAt updatedAt)
                     {
                         updatedAt.UpdatedAt = DateTimeOffset.UtcNow;
                     }
-                    
+
                     break;
                 case EntityState.Added:
 
@@ -33,11 +33,10 @@ public class EntityHelperSaveChangeInterceptor: SaveChangesInterceptor
                     {
                         createdAt.CreatedAt = DateTimeOffset.UtcNow;
                     }
-                    
+
                     break;
             }
         }
-        
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 }

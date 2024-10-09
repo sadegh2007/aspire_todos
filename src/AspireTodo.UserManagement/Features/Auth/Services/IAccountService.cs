@@ -8,4 +8,5 @@ public interface IAccountService
     public Task<TokenResponse> Register(RegisterRequest request, CancellationToken cancellationToken = default);
     public Task Logout(CancellationToken cancellationToken = default);
     public Task<UserDto> GetProfileAsync(CancellationToken cancellationToken = default);
+    public Task UpdateProfileAsync(UpdateProfileRequest request, CancellationToken cancellationToken = default);
 }
