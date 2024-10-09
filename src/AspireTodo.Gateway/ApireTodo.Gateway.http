@@ -1,0 +1,6 @@
+@ApireTodo.Gateway_HostAddress = http://localhost:5202
+
+GET {{ApireTodo.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

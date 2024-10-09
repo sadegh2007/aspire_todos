@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+      <PackageReference Include="EntityFrameworkCore.Projectables" />
+      <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" />
+      <PackageReference Include="LinqKit.Core" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Core.Data.Abstractions\AspireTodo.Core.Data.Abstractions.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.Shared\AspireTodo.Core.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

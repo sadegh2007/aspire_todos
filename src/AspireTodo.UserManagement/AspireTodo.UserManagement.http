@@ -1,0 +1,12 @@
+@HostAddress = http://localhost:63571
+
+POST {{HostAddress}}/api/account/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "phoneNumber": "09352760765",
+    "password": "A1234g"
+}
+
+###

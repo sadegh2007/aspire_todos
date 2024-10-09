@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.OpenApi\AspireTodo.Core.OpenApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageVersion Update="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
+    </ItemGroup>
+
+</Project>

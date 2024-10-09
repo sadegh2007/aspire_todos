@@ -1,0 +1,6 @@
+@AspireTodo.Todos_HostAddress = http://localhost:5096
+
+GET {{AspireTodo.Todos_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

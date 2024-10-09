@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsAspireHost>true</IsAspireHost>
+        <UserSecretsId>1e0bcea6-bf4f-4958-9a46-3b8de1444106</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Gateway\AspireTodo.Gateway.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj" />
+      <ProjectReference Include="..\AspireTodo.UserManagement\AspireTodo.UserManagement.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.Hosting.AppHost" />
+      <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+      <PackageReference Include="Aspire.Hosting.RabbitMQ" />
+    </ItemGroup>
+
+</Project>
