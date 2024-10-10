@@ -53,6 +53,11 @@ public class TextCompletionService: ITextCompletionService
         foreach (var todo in latestTodos.Data)
         {
             chatHistory.AddSystemMessage(todo.Title);
+
+            if (!string.IsNullOrWhiteSpace(todo.Summery))
+            {
+                chatHistory.AddSystemMessage(todo.Summery);
+            }
         }
 
         chatHistory.AddMessage(AuthorRole.User , input);
