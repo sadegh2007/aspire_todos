@@ -51,8 +51,7 @@ export const TodoListItem = ({todo, onRemoved, onUpdated}: TodoListItemProps) =>
     }
 
     return (
-        <AnimateTableRowItem key={todo.id}>
-            <td className='flex items-center'>
+        <AnimateTableRowItem className='flex items-center' key={todo.id}>
                 {
                     !inEditMode &&
                     <input
@@ -82,7 +81,6 @@ export const TodoListItem = ({todo, onRemoved, onUpdated}: TodoListItemProps) =>
                     inEditMode ? <></> : <DefaultActionButtons loading={loading} onEdit={() => setInEditMode(true)}
                                                                onRemove={onRemove}/>
                 }
-            </td>
         </AnimateTableRowItem>
     )
 }

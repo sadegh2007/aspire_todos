@@ -1,13 +1,12 @@
 import TodoForm from "../components/TodoForm.tsx";
 import TodosList from "../components/TodosList.tsx";
-import {useEffect, useState} from "react";
+import {startTransition, useEffect, useState} from "react";
 import TodoModel from "../models/TodoModel.ts";
 import {catchError} from "../../../services/ErrorHandlers.ts";
 import {TodosListApiRequest} from "../services/TodoService.ts";
 
 const HomePage = () => {
     const [todos, setTodos] = useState<TodoModel[]>([]);
-    const [totalCount, setTotalCount] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,22 +14,24 @@ const HomePage = () => {
     }, []);
     
     const onCreated = (todo: TodoModel) => {
-        setTodos(prev => ([todo, ...prev]));
+        startTransition(() => {
+            setTodos(prev => ([todo, ...prev]));
+        })
     }
 
     const onUpdated = (todo: TodoModel) => {
         const newTodos = todos.map(t => {
             if (t.id == todo.id) return todo;
             return t;
-        })
+        });
         
         setTodos(newTodos);
     }
     
     const onRemoved = (todo: TodoModel) => {
-        setTodos(prev => (prev.filter(x => x.id != todo.id)));
-        // fetchData();
-        setTotalCount(prev => prev-1)
+        startTransition(() => {
+            setTodos(prev => (prev.filter(x => x.id != todo.id)));
+        })
     }
 
     const fetchData = async () => {
@@ -39,7 +40,6 @@ const HomePage = () => {
         try {
             const result = await TodosListApiRequest({});
             setTodos(result.data);
-            setTotalCount(result.count)
         } catch (error) {
             catchError(error)
         }
@@ -56,8 +56,8 @@ const HomePage = () => {
                     ? <div className='w-full text-center'><span className='loading loading-spinner'/></div> 
                     : <TodosList onUpdated={onUpdated} onRemoved={onRemoved} todos={todos}/>
             }
-            <div className="divider"></div>
-            <p className='mt-0 text-gray-600 font-bold text-sm'>Count: { totalCount }</p>
+            {/*<div className="divider"></div>*/}
+            {/*<p className='mt-0 text-gray-600 font-bold text-sm'>Count: { totalCount }</p>*/}
         </div>
     </div>
 }
