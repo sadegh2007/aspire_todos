@@ -11,7 +11,7 @@ type TodosListProps = {
 
 const TodosList = (props: TodosListProps) => {
     return (
-        <ul className='todos-list'>
+        <ul className='todos-list mt-3 border border-gray-800 rounded-lg p-3'>
             {
                 props.todos.length == 0 && <AnimateTableRowItem><p className='text-center text-gray-600'>There is no todos.</p></AnimateTableRowItem>
             }

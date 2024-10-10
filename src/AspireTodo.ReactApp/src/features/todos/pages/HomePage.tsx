@@ -47,10 +47,11 @@ const HomePage = () => {
         setLoading(false);
     }
 
-    return <div className='w-screen h-screen flex items-center justify-center'>
+    return <div className='w-screen h-screen flex flex-col items-center justify-center'>
         <div className="bg-base-300 w-[90%] lg:w-[40%] rounded-xl p-5">
+            <h1 className='text-2xl font-bold text-center mb-4'>Todo App</h1>
+            <div className="divider"></div>
             <TodoForm onCreated={onCreated} />
-            <div className="divider text-gray-400 font-bold py-4">Todos List</div>
             {
                 loading 
                     ? <div className='w-full text-center'><span className='loading loading-spinner'/></div> 
