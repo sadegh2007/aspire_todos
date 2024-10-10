@@ -25,7 +25,8 @@ type TodoFormProps = {
 
 const TodoForm = (props: TodoFormProps) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [summery, setSummery] = useState<string|undefined>();
+    const [summery, setSummery] = useState<string|undefined>(props.todo?.summery);
+    const [key, setKey] = useState<number>(1); // update predicate textbox
 
     const {
         register,
@@ -44,7 +45,7 @@ const TodoForm = (props: TodoFormProps) => {
         try {
             if (props.isEdit) {
                 await UpdateTodoApiRequest(props.todo!.id, values);
-                
+
                 props.onUpdated!({
                     ...props.todo!,
                     title: values.title,
@@ -58,6 +59,7 @@ const TodoForm = (props: TodoFormProps) => {
             
             reset();
             setSummery(undefined);
+            setKey(prev => prev+1)
         }
         catch (e) {
             catchError(e)
@@ -101,8 +103,9 @@ const TodoForm = (props: TodoFormProps) => {
             </div>
 
             <PredictiveText
+                key={key}
                 placeholder="Summery..."
-                value={props.todo?.summery}
+                value={summery}
                 onChange={setSummery}
             />
             {/*<label className="form-control w-full mt-2">*/}
