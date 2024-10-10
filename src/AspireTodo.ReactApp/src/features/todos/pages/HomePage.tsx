@@ -29,6 +29,7 @@ const HomePage = () => {
     
     const onRemoved = (todo: TodoModel) => {
         setTodos(prev => (prev.filter(x => x.id != todo.id)));
+        fetchData();
     }
 
     const fetchData = async () => {

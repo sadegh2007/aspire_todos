@@ -25,6 +25,7 @@ type TodoFormProps = {
 
 const TodoForm = (props: TodoFormProps) => {
     const [loading, setLoading] = useState<boolean>(false);
+    const [summery, setSummery] = useState<string|undefined>();
 
     const {
         register,
@@ -38,6 +39,7 @@ const TodoForm = (props: TodoFormProps) => {
     
     const onSubmit = async (values: UpsertTodoRequest) => {
         setLoading(true);
+        values.summery = summery;
         
         try {
             if (props.isEdit) {
@@ -54,7 +56,8 @@ const TodoForm = (props: TodoFormProps) => {
                 props.onCreated!(todo);
             }
             
-            reset()
+            reset();
+            setSummery(undefined);
         }
         catch (e) {
             catchError(e)
@@ -100,6 +103,7 @@ const TodoForm = (props: TodoFormProps) => {
             <PredictiveText
                 placeholder="Summery..."
                 value={props.todo?.summery}
+                onChange={setSummery}
             />
             {/*<label className="form-control w-full mt-2">*/}
             {/*    <input*/}
