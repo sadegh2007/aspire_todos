@@ -28,8 +28,8 @@ public static class TodoEndpoints
     private static async Task<TodoDto> Get(TodoId id, ITodoService todoService)
         => await todoService.GetAsync(id);
 
-    private static async Task Completed(TodoId id, ITodoService todoService)
-        => await todoService.MarkAsCompletedAsync(id);
+    private static async Task Completed(TodoId id, [FromBody] MarkAsCompletedRequest request, ITodoService todoService)
+        => await todoService.MarkAsCompletedAsync(id, request);
 
     private static async Task<TodoDto> Create([FromBody] UpsertTodoRequest request, ITodoService todoService)
         => await todoService.CreateAsync(request);

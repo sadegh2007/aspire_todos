@@ -50,12 +50,12 @@ public class TodoService(
                ?? throw new TodosNotFound();
     }
 
-    public async Task MarkAsCompletedAsync(TodoId id, CancellationToken cancellationToken = default)
+    public async Task MarkAsCompletedAsync(TodoId id, MarkAsCompletedRequest request, CancellationToken cancellationToken = default)
     {
         var todo = await GetTodoAsync(id, cancellationToken);
 
-        todo.IsCompleted = true;
-        todo.CompletedAt = DateTimeOffset.UtcNow;
+        todo.IsCompleted = request.IsCompleted;
+        todo.CompletedAt = request.IsCompleted ? DateTimeOffset.UtcNow : null;
 
         dbContext.Todos.Update(todo);
         await dbContext.SaveChangesAsync(cancellationToken);

@@ -24,9 +24,14 @@ var todosService = builder.AddProject<Projects.AspireTodo_Todos>("todos")
     .WithReference(rabbitMq)
     .WithReference(usersService);
 
+var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
+    .WithExternalHttpEndpoints()
+    .WithEnvironment("VITE_API_BASE_PATH", "http://localhost:8080");
+
 builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
     .WithReference(usersService)
-    .WithReference(todosService);
+    .WithReference(todosService)
+    .WithReference(reactApp);
 
 builder.Build().Run();

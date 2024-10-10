@@ -21,6 +21,7 @@ public class ProxyBuilder
         {
             RouteId    = route,
             ClusterId = "cluster/" + route,
+            CorsPolicy = "myPolicy",
             Match = new RouteMatch
             {
                 Path = "/" + route + "/{**catch-all}",
