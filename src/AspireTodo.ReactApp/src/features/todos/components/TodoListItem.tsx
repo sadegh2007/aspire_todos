@@ -52,18 +52,21 @@ export const TodoListItem = ({todo, onRemoved, onUpdated}: TodoListItemProps) =>
 
     return <tr>
         <td className='flex items-center'>
-            <input
-                disabled={loading || inEditMode}
-                type="radio"
-                className="radio focus:outline-0"
-                onClick={() => checkCompleted()}
-                checked={isComplete}
-            />
+            {
+                !inEditMode &&
+                    <input
+                        disabled={loading || inEditMode}
+                        type="radio"
+                        className="radio focus:outline-0"
+                        onClick={() => checkCompleted()}
+                        defaultChecked={isComplete}
+                    />
+            }
 
-            <div className="mx-4 flex flex-col w-full">
+            <div className={`${!inEditMode ? 'mx-4' : ''} flex flex-col w-full`}>
                 {
                     inEditMode 
-                        ? <TodoForm isEdit todo={todo} onUpdated={onUpdatedTodo} />
+                        ? <TodoForm onCancelEdit={() => setInEditMode(false)} isEdit todo={todo} onUpdated={onUpdatedTodo} />
                         :
                         <>
                             <h2 className={`font-bold text-nowrap ${isComplete ? 'completed' : ''}`}>{todo.title}</h2>
@@ -102,7 +105,7 @@ const DefaultActionButtons = ({ loading, onRemove, onEdit }: { loading: boolean,
             <button onClick={onEdit} disabled={loading}
                     className='focus:outline-0 btn btn-square btn-sm btn-success'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                     stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                      className="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>

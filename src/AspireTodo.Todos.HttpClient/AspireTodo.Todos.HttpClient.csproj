@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Gridify.EntityFramework" />
+      <PackageReference Include="Refit.HttpClientFactory" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Todos.Shared\AspireTodo.Todos.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

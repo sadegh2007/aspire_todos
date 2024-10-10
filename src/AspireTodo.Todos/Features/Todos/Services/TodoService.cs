@@ -27,6 +27,7 @@ public class TodoService(
         return await dbContext.Todos.AsNoTracking()
             .Where(x => x.Creator.UserId == userId)
             .Select(x => x.ToDto())
+            .OrderByDescending(x => x.CreatedAt)
             .GridifyAsync(query, cancellationToken);
     }
 

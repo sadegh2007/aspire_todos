@@ -24,6 +24,9 @@ var todosService = builder.AddProject<Projects.AspireTodo_Todos>("todos")
     .WithReference(rabbitMq)
     .WithReference(usersService);
 
+var aiTextCompletion = builder.AddProject<Projects.AspireTodo_Ai_TextCompletion>("textCompletion")
+    .WithReference(todosService);
+
 var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
     .WithExternalHttpEndpoints()
     .WithEnvironment("VITE_API_BASE_PATH", "http://localhost:8080");
@@ -32,6 +35,7 @@ builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
     .WithReference(usersService)
     .WithReference(todosService)
+    .WithReference(aiTextCompletion)
     .WithReference(reactApp);
 
 builder.Build().Run();

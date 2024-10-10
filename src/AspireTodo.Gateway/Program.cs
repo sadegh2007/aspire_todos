@@ -18,6 +18,7 @@ builder.Services.AddCors(options =>
 var (routes, clusters) = ProxyBuilder.Create()
     .AddRoute("users", "http://users")
     .AddRoute("todos", "http://todos")
+    .AddRoute("textCompletion", "http://textCompletion")
     .Build();
 
 builder.Services.AddReverseProxy().LoadFromMemory(routes, clusters);
@@ -34,6 +35,7 @@ app.UseSwaggerUI(options =>
 
     options.SwaggerEndpoint("/users/swagger/v1/swagger.json", "Users Management V1");
     options.SwaggerEndpoint("/todos/swagger/v1/swagger.json", "Todos V1");
+    options.SwaggerEndpoint("/textCompletion/swagger/v1/swagger.json", "Ai Text Completion V1");
 
     options.DocExpansion(DocExpansion.List);
 });
