@@ -29,7 +29,8 @@ const HomePage = () => {
     
     const onRemoved = (todo: TodoModel) => {
         setTodos(prev => (prev.filter(x => x.id != todo.id)));
-        fetchData();
+        // fetchData();
+        setTotalCount(prev => prev-1)
     }
 
     const fetchData = async () => {
@@ -49,7 +50,7 @@ const HomePage = () => {
     return <div className='w-screen h-screen flex items-center justify-center'>
         <div className="bg-base-300 w-[90%] lg:w-[40%] rounded-xl p-5">
             <TodoForm onCreated={onCreated} />
-            <div className="divider py-4">Todos List</div>
+            <div className="divider text-gray-400 font-bold py-4">Todos List</div>
             {
                 loading 
                     ? <div className='w-full text-center'><span className='loading loading-spinner'/></div> 
