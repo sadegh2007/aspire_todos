@@ -10,6 +10,8 @@ public class UserEntityConfiguration: IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.TodosCount)
+            .HasDefaultValue(0);
         
         builder.Property(x => x.Name)
             .HasMaxLength(GlobalConstants.NameMaxLength);

@@ -12,11 +12,14 @@ public static class DependencyInjection
 
         services.AddMassTransit(configurator =>
         {
+            configurator.SetKebabCaseEndpointNameFormatter();
+
             configure.Invoke(configurator);
 
             configurator.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(new Uri(host), "/");
+                cfg.UseInMemoryOutbox(context);
                 cfg.ConfigureEndpoints(context);
             });
         });

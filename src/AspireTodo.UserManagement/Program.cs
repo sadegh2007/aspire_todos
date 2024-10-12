@@ -7,7 +7,9 @@ using AspireTodo.Core.OpenApi;
 using AspireTodo.UserManagement;
 using AspireTodo.UserManagement.Configuration;
 using AspireTodo.UserManagement.Data;
+using AspireTodo.UserManagement.Features.Users.Consumers;
 using AspireTodo.UserManagement.Shared;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 

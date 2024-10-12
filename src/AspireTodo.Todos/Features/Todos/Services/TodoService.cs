@@ -2,6 +2,7 @@ using AspireTodo.Core.Exceptions;
 using AspireTodo.Core.Identity;
 using AspireTodo.Core.Shared;
 using AspireTodo.Todos.Data;
+using AspireTodo.Todos.Events;
 using AspireTodo.Todos.Exceptions;
 using AspireTodo.Todos.Features.Todos.Data.Mappers;
 using AspireTodo.Todos.Features.Todos.Domains;
@@ -10,6 +11,7 @@ using AspireTodo.Todos.Shared;
 using AspireTodo.UserManagement.HttpClient;
 using Gridify;
 using Gridify.EntityFramework;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspireTodo.Todos.Features.Todos.Services;
@@ -17,7 +19,8 @@ namespace AspireTodo.Todos.Features.Todos.Services;
 public class TodoService(
     TodosDbContext dbContext,
     IHttpContextAccessor httpContextAccessor,
-    IUsersHttpApi usersHttpApi
+    IUsersHttpApi usersHttpApi,
+    IPublishEndpoint publishEndpoint
 ): ITodoService
 {
     public async Task<Paging<TodoDto>> ListAsync(GridifyQuery query, CancellationToken cancellationToken = default)
@@ -60,6 +63,8 @@ public class TodoService(
 
         dbContext.Todos.Update(todo);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        await publishEndpoint.Publish<TodoCompleted>(new(id, todo.IsCompleted), cancellationToken);
     }
 
     public async Task<TodoDto> CreateAsync(UpsertTodoRequest request, CancellationToken cancellationToken = default)
@@ -83,6 +88,9 @@ public class TodoService(
 
         await dbContext.Todos.AddAsync(todo, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        var todosCount = await dbContext.Todos.Where(x => x.Creator.UserId == userId).CountAsync(cancellationToken);
+        await publishEndpoint.Publish<TodoCreated>(new(todo.Id, UserId.FromInt32(22), todosCount), cancellationToken);
 
         return await GetAsync(todo.Id, cancellationToken);
     }

@@ -14,6 +14,7 @@ public sealed class User: IdentityUser<int>, ICreatedAt, IUpdatedAt, ISoftDelete
 
     public string? Name { get; set; }
     public string? Family { get; set; }
+    public int TodosCount { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

@@ -7,8 +7,10 @@ using AspireTodo.Core.OpenApi;
 using AspireTodo.Todos;
 using AspireTodo.Todos.Configurations;
 using AspireTodo.Todos.Data;
+using AspireTodo.Todos.Features.Todos.Saga;
 using AspireTodo.Todos.Shared;
 using Gridify;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
