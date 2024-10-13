@@ -20,7 +20,7 @@ public partial class FailedToUpdateUserTodosCountConsumer(
     {
         LogEventReceived();
 
-        var todo = await appDbContext.Todos.FirstOrDefaultAsync(x => x.Id == context.Message.TodoId);
+        var todo = await appDbContext.Todos.FirstOrDefaultAsync(x => x.Id == context.Message.Todo.Id);
 
         if (todo == null)
         {

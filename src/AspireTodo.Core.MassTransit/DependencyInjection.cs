@@ -19,6 +19,7 @@ public static class DependencyInjection
             configurator.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(new Uri(host), "/");
+                cfg.SetQuorumQueue(3);
                 cfg.UseInMemoryOutbox(context);
                 cfg.ConfigureEndpoints(context);
             });

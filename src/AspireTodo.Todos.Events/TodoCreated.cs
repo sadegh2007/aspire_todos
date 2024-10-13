@@ -1,5 +1,6 @@
 using AspireTodo.Core.Shared;
+using AspireTodo.Todos.Shared;
 
 namespace AspireTodo.Todos.Events;
 
-public record TodoCreated(TodoId TodoId, UserId UserId, int UserTodosCount);
+public record TodoCreated(TodoDto Todo, UserId UserId, int UserTodosCount);

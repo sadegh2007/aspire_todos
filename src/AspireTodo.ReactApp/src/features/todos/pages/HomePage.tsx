@@ -1,22 +1,71 @@
 import TodoForm from "../components/TodoForm.tsx";
 import TodosList from "../components/TodosList.tsx";
-import {startTransition, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import TodoModel from "../models/TodoModel.ts";
-import {catchError} from "../../../services/ErrorHandlers.ts";
+import {catchError, notify} from "../../../services/ErrorHandlers.ts";
 import {TodosListApiRequest} from "../services/TodoService.ts";
+import * as signalR from "@microsoft/signalr";
+import {GetAccessToken} from "../../../services/StorageService.ts";
 
 const HomePage = () => {
     const [todos, setTodos] = useState<TodoModel[]>([]);
     const [loading, setLoading] = useState(true);
+    const [connection, setConnection] = useState<signalR.HubConnection|undefined>();
 
     useEffect(() => {
-        fetchData()
+        if (connection) {
+            connection.start()
+                .then(() => {
+                    // console.log('Connected!');
+                    connection.on('ReceiveMessage', (data: {  type: string, data?: any  }) => {
+                        console.log(data)
+                        if (data.type == 'TodoCreated') {
+                            notify("Todo created successfully", "success");
+                            setTodos(prev => ([data.data.todo, ...prev]));
+                        }
+                        if (data.type == 'FailedUserUpdateTodosCount') {
+                            notify(
+                                data.data.message ?? "There is problem to add todo, please try again.",
+                                "error"
+                            );
+                        }
+                        if (data.type == 'TodoRemoved') {
+                            setTodos(prev => (prev.filter(todo => todo.id != data.data.todoId)));
+                            
+                            notify(
+                                "Todo Removed Successfully.",
+                                "success"
+                            );
+                        }
+                    });
+                })
+                .catch(e => console.log('Connection failed: ', e));
+        }
+
+        return () => {}
+    }, [connection]);
+
+    useEffect(() => {
+        const newConnection = new signalR.HubConnectionBuilder()
+            .withUrl(`${import.meta.env.VITE_API_BASE_PATH}/notifications/todosHub`, {
+                accessTokenFactory(): string | Promise<string> {
+                    return GetAccessToken()!;
+                },
+                skipNegotiation: true,
+                transport: signalR.HttpTransportType.WebSockets,
+            })
+            .withAutomaticReconnect()
+            .build();
+
+        setConnection(newConnection);
+        
+        fetchData();
     }, []);
     
-    const onCreated = (todo: TodoModel) => {
-        startTransition(() => {
-            setTodos(prev => ([todo, ...prev]));
-        })
+    const onCreated = (_todo: TodoModel) => {
+        // startTransition(() => {
+        //     setTodos(prev => ([todo, ...prev]));
+        // })
     }
 
     const onUpdated = (todo: TodoModel) => {
@@ -28,10 +77,10 @@ const HomePage = () => {
         setTodos(newTodos);
     }
     
-    const onRemoved = (todo: TodoModel) => {
-        startTransition(() => {
-            setTodos(prev => (prev.filter(x => x.id != todo.id)));
-        })
+    const onRemoved = (_todo: TodoModel) => {
+        // startTransition(() => {
+        //     setTodos(prev => (prev.filter(x => x.id != todo.id)));
+        // })
     }
 
     const fetchData = async () => {
@@ -54,7 +103,7 @@ const HomePage = () => {
             <TodoForm onCreated={onCreated} />
             {
                 loading 
-                    ? <div className='w-full text-center'><span className='loading loading-spinner'/></div> 
+                    ? <div className='w-full mt-3 text-center'><span className='loading loading-spinner'/></div> 
                     : <TodosList onUpdated={onUpdated} onRemoved={onRemoved} todos={todos}/>
             }
             {/*<div className="divider"></div>*/}

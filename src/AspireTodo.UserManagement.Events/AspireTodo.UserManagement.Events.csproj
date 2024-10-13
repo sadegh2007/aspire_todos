@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AspireTodo.Core.Shared\AspireTodo.Core.Shared.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos.Shared\AspireTodo.Todos.Shared.csproj" />
     </ItemGroup>
 
 </Project>

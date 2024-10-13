@@ -8,6 +8,10 @@ export const SetLoginData = (data: LoginResponse) => {
   localStorage.setItem(GenKeyName("login-data"), JSON.stringify(data));
 }
 
+export const RemoveLoginData = () => {
+  localStorage.removeItem(GenKeyName("login-data"));
+}
+
 export const GetLoginData = (): LoginResponse|undefined => {
   const data = localStorage.getItem(GenKeyName("login-data"));
   

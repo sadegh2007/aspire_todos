@@ -1,8 +1,9 @@
 using AspireTodo.Todos.Data;
 using AspireTodo.Todos.Features.Todos.Consumers;
-using AspireTodo.Todos.Features.Todos.Saga;
 using MassTransit;
 using AspireTodo.Todos.Features.TodoUsers.Consumers;
+using AspireTodo.Todos.StateMachines;
+using AspireTodo.Todos.StateMachines.States;
 
 namespace AspireTodo.Todos.Configurations;
 
@@ -17,6 +18,12 @@ public static class ConsumersConfiguration
                 efc.UsePostgres();
             });
 
+        configurator.AddConsumer<TodoCreatingConsumer>(ctx =>
+        {
+            ctx.UseConcurrentMessageLimit(100);
+            ctx.UseConcurrencyLimit(100);
+        });
+
         configurator.AddConsumer<UserUpdatedConsumer>(ctx =>
         {
             ctx.UseConcurrentMessageLimit(200);
@@ -24,6 +31,12 @@ public static class ConsumersConfiguration
         });
 
         configurator.AddConsumer<FailedToUpdateUserTodosCountConsumer>(ctx =>
+        {
+            ctx.UseConcurrentMessageLimit(200);
+            ctx.UseConcurrencyLimit(200);
+        });
+        
+        configurator.AddConsumer<TodoRemovingConsumer>(ctx =>
         {
             ctx.UseConcurrentMessageLimit(200);
             ctx.UseConcurrencyLimit(200);

@@ -1,7 +1,8 @@
 using AspireTodo.Core.Data;
 using AspireTodo.Todos.Features.Todos.Domains;
-using AspireTodo.Todos.Features.Todos.Saga;
 using AspireTodo.Todos.Features.TodoUsers.Domains;
+using AspireTodo.Todos.StateMachines.Maps;
+using AspireTodo.Todos.StateMachines.States;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -9,7 +10,7 @@ using SagaDbContext = AspireTodo.Core.MassTransit.SagaDbContext;
 
 namespace AspireTodo.Todos.Data;
 
-public class TodosDbContext(DbContextOptions<SagaDbContext> options) : SagaDbContext(options)
+public class TodosDbContext(DbContextOptions<TodosDbContext> options) : SagaDbContext(options)
 {
     public DbSet<Todo> Todos => Set<Todo>();
     public DbSet<TodoUser> TodoUsers => Set<TodoUser>();
@@ -39,7 +40,7 @@ public class TodosDbContextFactory : IDesignTimeDbContextFactory<TodosDbContext>
 
     public TodosDbContext CreateDbContext(string[] args)
     {
-        var builder = new DbContextOptionsBuilder<SagaDbContext>();
+        var builder = new DbContextOptionsBuilder<TodosDbContext>();
         builder.UseNpgsql(Cs);
 
         return new TodosDbContext(builder.Options);

@@ -40,9 +40,8 @@ export const TodoListItem = ({todo, onRemoved, onUpdated}: TodoListItemProps) =>
             }
         } catch (e) {
             catchError(e)
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     const onUpdatedTodo = (editedTodo: TodoModel) => {
@@ -92,7 +91,7 @@ const DefaultActionButtons =
                 <button onClick={onRemove} disabled={loading}
                         className='focus:outline-0 btn btn-square btn-sm btn-error'>
                     {
-                        loading ? <span className='loading-spinner'></span> :
+                        loading ? <span className='loading loading-sm loading-spinner'></span> :
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"

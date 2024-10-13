@@ -31,7 +31,7 @@ public static class TodoEndpoints
     private static async Task Completed(TodoId id, [FromBody] MarkAsCompletedRequest request, ITodoService todoService)
         => await todoService.MarkAsCompletedAsync(id, request);
 
-    private static async Task<TodoDto> Create([FromBody] UpsertTodoRequest request, ITodoService todoService)
+    private static async Task Create([FromBody] UpsertTodoRequest request, ITodoService todoService)
         => await todoService.CreateAsync(request);
 
     private static async Task Update(TodoId id, [FromBody] UpsertTodoRequest request, ITodoService todoService)

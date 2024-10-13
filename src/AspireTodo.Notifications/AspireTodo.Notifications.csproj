@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Core.ExceptionHandler\AspireTodo.Core.ExceptionHandler.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj" />
+      <ProjectReference Include="..\AspireTodo.Core.OpenApi\AspireTodo.Core.OpenApi.csproj" />
+      <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos.HttpClient\AspireTodo.Todos.HttpClient.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" />
+    </ItemGroup>
+</Project>

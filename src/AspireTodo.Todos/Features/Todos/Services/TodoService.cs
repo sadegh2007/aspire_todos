@@ -1,4 +1,3 @@
-using AspireTodo.Core.Exceptions;
 using AspireTodo.Core.Identity;
 using AspireTodo.Core.Shared;
 using AspireTodo.Todos.Data;
@@ -6,9 +5,7 @@ using AspireTodo.Todos.Events;
 using AspireTodo.Todos.Exceptions;
 using AspireTodo.Todos.Features.Todos.Data.Mappers;
 using AspireTodo.Todos.Features.Todos.Domains;
-using AspireTodo.Todos.Features.TodoUsers.Domains;
 using AspireTodo.Todos.Shared;
-using AspireTodo.UserManagement.HttpClient;
 using Gridify;
 using Gridify.EntityFramework;
 using MassTransit;
@@ -19,7 +16,6 @@ namespace AspireTodo.Todos.Features.Todos.Services;
 public class TodoService(
     TodosDbContext dbContext,
     IHttpContextAccessor httpContextAccessor,
-    IUsersHttpApi usersHttpApi,
     IPublishEndpoint publishEndpoint
 ): ITodoService
 {
@@ -67,32 +63,12 @@ public class TodoService(
         await publishEndpoint.Publish<TodoCompleted>(new(id, todo.IsCompleted), cancellationToken);
     }
 
-    public async Task<TodoDto> CreateAsync(UpsertTodoRequest request, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(UpsertTodoRequest request, CancellationToken cancellationToken = default)
     {
         var userId = httpContextAccessor.HttpContext!.User.GetTypedUserId()!.Value;
+        var authToken = httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-        var todo = Todo.Create(request.Title, request.Summery);
-
-        var user = await dbContext.TodoUsers.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken: cancellationToken);
-        if (user is null)
-        {
-            var authToken = httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            var appUser = await usersHttpApi.GetAsync(userId.Value, authToken, cancellationToken);
-            user = TodoUser.Create(appUser);
-
-            await dbContext.TodoUsers.AddAsync(user, cancellationToken);
-        }
-
-        todo.Creator = user;
-
-        await dbContext.Todos.AddAsync(todo, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-
-        var todosCount = await dbContext.Todos.Where(x => x.Creator.UserId == userId).CountAsync(cancellationToken);
-        await publishEndpoint.Publish<TodoCreated>(new(todo.Id, UserId.FromInt32(22), todosCount), cancellationToken);
-
-        return await GetAsync(todo.Id, cancellationToken);
+        await publishEndpoint.Publish<TodoCreating>(new(request.Title, request.Summery, userId, authToken), cancellationToken);
     }
 
     public async Task UpdateAsync(TodoId id, UpsertTodoRequest request, CancellationToken cancellationToken = default)
@@ -108,9 +84,7 @@ public class TodoService(
 
     public async Task RemoveAsync(TodoId id, CancellationToken cancellationToken = default)
     {
-        var todo = await GetTodoAsync(id, cancellationToken);
-
-        dbContext.Todos.Remove(todo);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        var userId = httpContextAccessor.HttpContext!.User.GetTypedUserId()!.Value;
+        await publishEndpoint.Publish<TodoRemoving>(new(id, userId), cancellationToken);
     }
 }

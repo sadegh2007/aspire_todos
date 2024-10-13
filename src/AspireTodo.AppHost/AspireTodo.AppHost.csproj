@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AspireTodo.Ai.TextCompletion\AspireTodo.Ai.TextCompletion.csproj" />
       <ProjectReference Include="..\AspireTodo.Gateway\AspireTodo.Gateway.csproj" />
+      <ProjectReference Include="..\AspireTodo.Notifications\AspireTodo.Notifications.csproj" />
       <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj" />
       <ProjectReference Include="..\AspireTodo.UserManagement\AspireTodo.UserManagement.csproj" />
     </ItemGroup>

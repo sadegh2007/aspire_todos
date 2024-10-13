@@ -14,6 +14,11 @@ var postgres = builder.AddPostgres("postgres", password: builder.CreateStablePas
 
 var userDb = postgres.AddDatabase("UsersDb");
 var todosDb = postgres.AddDatabase("TodosDb");
+var notificationsDb = postgres.AddDatabase("notificationsDb");
+
+var notificationsService = builder.AddProject<Projects.AspireTodo_Notifications>("notifications")
+    .WithReference(notificationsDb)
+    .WithReference(rabbitMq);
 
 var usersService = builder.AddProject<Projects.AspireTodo_UserManagement>("users")
     .WithReference(userDb)
@@ -33,6 +38,7 @@ var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
 
 builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
+    .WithReference(notificationsService)
     .WithReference(usersService)
     .WithReference(todosService)
     .WithReference(aiTextCompletion)

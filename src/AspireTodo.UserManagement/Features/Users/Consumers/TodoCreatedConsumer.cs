@@ -26,7 +26,7 @@ public partial class TodoCreatedConsumer(UsersDbContext appDbContext, ILogger<To
         if (user == null)
         {
             LogUserNotFound(context.Message.UserId.Value);
-            await context.Publish<FailedUserUpdateTodosCount>(new(context.Message.UserId, context.Message.TodoId));
+            await context.Publish<FailedUserUpdateTodosCount>(new(context.Message.UserId, context.Message.Todo, Message: "User Not Found!"));
             return;
         }
 
@@ -36,6 +36,6 @@ public partial class TodoCreatedConsumer(UsersDbContext appDbContext, ILogger<To
 
         LogUserUpdated(context.Message.UserId.Value, context.Message.UserTodosCount);
 
-        await context.Publish<UserUpdatedTodosCount>(new(context.Message.UserId, context.Message.TodoId, user.TodosCount));
+        await context.Publish<UserUpdatedTodosCount>(new(context.Message.UserId, context.Message.Todo, user.TodosCount));
     }
 }
