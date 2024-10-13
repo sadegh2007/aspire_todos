@@ -18,6 +18,10 @@ public static class DependencyInjection
 
             configurator.UsingRabbitMq((context, cfg) =>
             {
+                cfg.AutoStart = true;
+
+                cfg.UseInstrumentation();
+
                 cfg.Host(new Uri(host), "/");
                 cfg.SetQuorumQueue(3);
                 cfg.UseInMemoryOutbox(context);
