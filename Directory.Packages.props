@@ -31,17 +31,17 @@
     <PackageVersion Include="Serilog.Sinks.Async" Version="2.0.0" />
     <PackageVersion Include="Opw.HttpExceptions.AspNetCore" Version="4.0.3" />
     <PackageVersion Include="SixLabors.ImageSharp.Web" Version="3.1.3" />
-    <PackageVersion Include="Meziantou.Framework.StronglyTypedId" Version="2.3.0" />
+    <PackageVersion Include="Meziantou.Framework.StronglyTypedId" Version="2.3.1" />
     <!-- Roslynator -->
-    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.7">
+    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
-    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.12.7">
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.12.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
-    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.7">
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
