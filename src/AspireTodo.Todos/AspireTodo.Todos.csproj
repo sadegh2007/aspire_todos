@@ -27,8 +27,4 @@
       <PackageVersion Update="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Todos\Saga\" />
-    </ItemGroup>
-
 </Project>
