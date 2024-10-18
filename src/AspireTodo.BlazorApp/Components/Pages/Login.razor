@@ -1,0 +1,59 @@
+@page "/login"
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+@attribute [AllowAnonymous]
+
+<PageTitle>TodoList - Login</PageTitle>
+
+<div class="w-screen h-screen flex justify-center items-center">
+    <div>
+        <EditForm Model="Model" OnValidSubmit="ProcessLogin" @onsubmit:preventDefault FormName="login" class="bg-base-300 w-96 rounded-xl p-5">
+            <DataAnnotationsValidator />
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Phone Number</span>
+                </div>
+                <InputText @bind-Value="Model!.PhoneNumber" class="input input-bordered w-full"/>
+                <ValidationMessage class="text-sm text-error" For="@(() => Model!.PhoneNumber)"/>
+            </label>
+
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Password</span>
+                </div>
+                <InputText type="password" @bind-Value="Model!.Password" class="input input-bordered w-full"/>
+                <ValidationMessage class="text-sm text-error" For="@(() => Model!.Password)"/>
+            </label>
+
+            <button class="mt-4 btn btn-primary w-full block">
+                Login
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    class LoginRequest
+    {
+        [Required]
+        [StringLength(11, ErrorMessage = "Phone number must be 11 digits.")]
+        public string PhoneNumber { get; set; }  
+        
+        [Required]
+        [MinLength(6, ErrorMessage = "Minimum length of password must be 6 character at least.")]
+        public string Password { get; set; }    
+    }
+
+    [SupplyParameterFromForm]
+    private LoginRequest? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private void ProcessLogin()
+    {
+        Console.WriteLine("PhoneNumber: " + Model?.PhoneNumber ?? "-");
+        NavigationManager.NavigateTo("/");
+    }
+    
+}

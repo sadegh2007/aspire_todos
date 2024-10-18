@@ -36,12 +36,16 @@ var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
     .WithExternalHttpEndpoints()
     .WithEnvironment("VITE_API_BASE_PATH", "http://localhost:8080");
 
+var blazorApp = builder.AddProject<Projects.AspireTodo_BlazorApp>("blazorApp")
+    .WithExternalHttpEndpoints();
+
 builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
     .WithReference(notificationsService)
     .WithReference(usersService)
     .WithReference(todosService)
     .WithReference(aiTextCompletion)
-    .WithReference(reactApp);
+    .WithReference(reactApp)
+    .WithReference(blazorApp);
 
 builder.Build().Run();
