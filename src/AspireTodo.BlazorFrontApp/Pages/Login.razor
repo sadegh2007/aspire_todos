@@ -6,6 +6,7 @@
 @inject HttpClient Http
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IToastService Toast
 
 <PageTitle>TodosList - Login</PageTitle>
 
@@ -17,7 +18,7 @@
                 <div class="label">
                     <span class="label-text">Phone Number</span>
                 </div>
-                <InputText placeholder="Phone Number..." @bind-Value="Model!.PhoneNumber" class="input input-bordered w-full"/>
+                <InputText disabled="@Loading" placeholder="Phone Number..." @bind-Value="Model!.PhoneNumber" class="input input-bordered w-full"/>
                 <ValidationMessage class="text-sm text-error" For="@(() => Model!.PhoneNumber)"/>
             </label>
 
@@ -25,12 +26,19 @@
                 <div class="label">
                     <span class="label-text">Password</span>
                 </div>
-                <InputText placeholder="Password..." type="password" @bind-Value="Model!.Password" class="input input-bordered w-full"/>
+                <InputText disabled="@Loading" placeholder="Password..." type="password" @bind-Value="Model!.Password" class="input input-bordered w-full"/>
                 <ValidationMessage class="text-sm text-error" For="@(() => Model!.Password)"/>
             </label>
 
-            <button class="mt-4 btn btn-primary w-full block">
-                Login
+            <button disabled="@Loading" class="mt-4 btn btn-primary w-full block">
+                @if (Loading)
+                {
+                    <span class="loading loading-spinner"></span>
+                }
+                @if (!Loading)
+                {
+                    <span>Login</span>
+                }
             </button>
         </EditForm>
     </div>
@@ -51,18 +59,31 @@
     [SupplyParameterFromForm]
     private LoginRequest? Model { get; set; }
 
+    public bool Loading { get; set; }
+
     protected override void OnInitialized() => Model ??= new();
 
     private async Task ProcessLogin()
     {
-        var result = await Http.PostAsJsonAsync("/users/api/account/login", Model);
-        var response = await result.Content.ReadFromJsonAsync<TokenResponse>();
+        Loading = true;
+        
+        try
+        {
+            var result = await Http.PostAsJsonAsync("/users/api/account/login", Model);
+            var response = await result.Content.ReadFromJsonAsync<TokenResponse>();
 
-        await LocalStorage.SetItemAsync("loginData", response);
-        await LocalStorage.SetItemAsStringAsync("token", response!.AccessToken);
-        
-        await AuthStateProvider.GetAuthenticationStateAsync();
-        
-        NavigationManager.NavigateTo("/");
+            await LocalStorage.SetItemAsync("loginData", response);
+            await LocalStorage.SetItemAsStringAsync("token", response!.AccessToken);
+
+            await AuthStateProvider.GetAuthenticationStateAsync();
+
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Toast.ShowError(ex.Message);
+        }
+
+        Loading = false;
     }
 }

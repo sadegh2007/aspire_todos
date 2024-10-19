@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
 @inject ILocalStorageService LocalStorage
+@inject IToastService Toast
 
 <EditForm OnValidSubmit="SubmitTodo" Model="Todo" FormName="TodoForm" class="">
     <DataAnnotationsValidator />
@@ -15,13 +16,24 @@
             />
             <ValidationMessage For="@(() => Todo!.Title)"></ValidationMessage>
         </label>
-        <button type="submit" class="btn btn-primary ml-2">Add</button>
+        <button disabled="@Loading" type="submit" class="btn btn-primary ml-2">Add</button>
     </div>
+    <label class="form-control w-full">
+        <InputTextArea
+            rows="3"
+            @bind-Value="Todo!.Summery"
+            placeholder="Summery..."
+            class="focus:outline-0 textarea w-full"
+        />
+        <ValidationMessage For="@(() => Todo!.Summery)"></ValidationMessage>
+    </label>
 </EditForm>
 
 @code {
     [SupplyParameterFromForm]
     public UpsertTodoRequest? Todo { get; set; }
+
+    private bool Loading { get; set; }
     
     protected override void OnInitialized()
     {
@@ -30,12 +42,23 @@
 
     private async Task SubmitTodo()
     {
-        var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
-        await TodoApi.CreateAsync(new()
+        Loading = true;
+        
+        try
         {
-            Title = Todo!.Title!,
-            Summery = Todo.Summery
-        }, token);
+            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            await TodoApi.CreateAsync(new()
+            {
+                Title = Todo!.Title!,
+                Summery = Todo.Summery
+            }, token);
+        }
+        catch (Exception ex)
+        {
+            Toast.ShowError(ex.Message);
+        }
+
+        Loading = false;
     }
     
     public class UpsertTodoRequest

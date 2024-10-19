@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavMan
+@using Blazored.Toast.Configuration
 
 <CascadingAuthenticationState>
 <Router AppAssembly="@typeof(App).Assembly">
@@ -8,6 +9,11 @@
                 @{ NavMan.NavigateTo("/login"); }
             </NotAuthorized>
         </AuthorizeRouteView>
+        <BlazoredToasts 
+            ShowProgressBar="true"
+            Timeout="10"
+            Position="ToastPosition.TopRight"
+        />
         <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>

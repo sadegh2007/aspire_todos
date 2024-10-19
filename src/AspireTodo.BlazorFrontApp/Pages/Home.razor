@@ -5,6 +5,7 @@
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inject ILocalStorageService LocalStorage
+@inject IToastService Toast
 
 <PageTitle>TodosList - Home</PageTitle>
 
@@ -14,20 +15,39 @@
         <div class="divider"></div>
         
         <TodoForm />
-        <TodoList Todos="Todos" />
+        
+        @if (Loading)
+        {
+            <div class="todos-list mt-3 border border-gray-800 rounded-lg p-3">
+                <span class="loading loading-spinner"></span>
+            </div>
+        }
+        <TodoList Todos="Todos" Loading="Loading" />
     </div>
 </div>
 
 @code
 {
     public List<TodoDto> Todos { get; set; } = [];
+    public bool Loading { get; set; } = true;
     
     protected override async Task OnInitializedAsync()
     {
-        var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
-        var result = await TodoApi.ListAsync(new GridifyQuery(1, 100, ""), token);
+        Loading = true;
+        
+        try
+        {
+            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            var result = await TodoApi.ListAsync(new GridifyQuery(1, 100, ""), token);
 
-        Todos = result.Data.ToList();
+            Todos = result.Data.ToList();
+        }
+        catch (Exception ex)
+        {
+            Toast.ShowError(ex.Message);
+        }
+
+        Loading = false;
         
         await base.OnInitializedAsync();
     }
