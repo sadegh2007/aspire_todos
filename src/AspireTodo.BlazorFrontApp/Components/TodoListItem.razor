@@ -1,0 +1,27 @@
+@using AspireTodo.Todos.Shared
+
+<li class="relative py-3 border-b border-gray-800 flex items-center">
+    @if (!InEditMode)
+    {
+        <input
+            type="radio"
+            class="radio focus:outline-0"
+            @bind="Todo.IsCompleted"
+            checked="@(Todo.IsCompleted)"
+        />
+    }
+    <div class="@(!InEditMode ? "mx-4" : "") flex flex-col w-full">
+        <h2 class="font-bold text-nowrap @(Todo.IsCompleted ? "completed" : "")">@Todo.Title</h2>
+        @if(!string.IsNullOrWhiteSpace(Todo.Summery)) {
+            <small>@Todo.Summery</small>
+        }
+    </div>
+</li>
+
+@code {
+    [Parameter] 
+    public TodoDto Todo { get; set; }
+
+    [Parameter] 
+    public bool InEditMode { get; set; }
+}

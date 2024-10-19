@@ -1,0 +1,47 @@
+@using System.ComponentModel.DataAnnotations
+@inject HttpClient Http
+@inject Todos.HttpClient.ITodosHttpApi TodoApi
+@inject ILocalStorageService LocalStorage
+
+<EditForm OnValidSubmit="SubmitTodo" Model="Todo" FormName="TodoForm" class="">
+    <DataAnnotationsValidator />
+    <div class="flex w-full mb-2">
+        <label class="form-control w-full">
+            <InputText
+                type="text"
+                @bind-Value="Todo!.Title"
+                placeholder="type the task title..."
+                class="focus:outline-0 input w-full"
+            />
+            <ValidationMessage For="@(() => Todo!.Title)"></ValidationMessage>
+        </label>
+        <button type="submit" class="btn btn-primary ml-2">Add</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    public UpsertTodoRequest? Todo { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Todo ??= new();
+    }
+
+    private async Task SubmitTodo()
+    {
+        var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+        await TodoApi.CreateAsync(new()
+        {
+            Title = Todo!.Title!,
+            Summery = Todo.Summery
+        }, token);
+    }
+    
+    public class UpsertTodoRequest
+    {
+        [Required]
+        public string? Title { get; set; }
+        public string? Summery { get; set; }
+    }
+}

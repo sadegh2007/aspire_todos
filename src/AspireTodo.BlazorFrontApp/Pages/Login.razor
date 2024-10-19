@@ -1,9 +1,13 @@
 @page "/login"
 @using System.ComponentModel.DataAnnotations
+@using AspireTodo.UserManagement.Shared
 @inject NavigationManager NavigationManager
-@attribute [AllowAnonymous]
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
 
-<PageTitle>TodoList - Login</PageTitle>
+<PageTitle>TodosList - Login</PageTitle>
 
 <div class="w-screen h-screen flex justify-center items-center">
     <div>
@@ -13,7 +17,7 @@
                 <div class="label">
                     <span class="label-text">Phone Number</span>
                 </div>
-                <InputText @bind-Value="Model!.PhoneNumber" class="input input-bordered w-full"/>
+                <InputText placeholder="Phone Number..." @bind-Value="Model!.PhoneNumber" class="input input-bordered w-full"/>
                 <ValidationMessage class="text-sm text-error" For="@(() => Model!.PhoneNumber)"/>
             </label>
 
@@ -21,7 +25,7 @@
                 <div class="label">
                     <span class="label-text">Password</span>
                 </div>
-                <InputText type="password" @bind-Value="Model!.Password" class="input input-bordered w-full"/>
+                <InputText placeholder="Password..." type="password" @bind-Value="Model!.Password" class="input input-bordered w-full"/>
                 <ValidationMessage class="text-sm text-error" For="@(() => Model!.Password)"/>
             </label>
 
@@ -33,16 +37,15 @@
 </div>
 
 @code {
-
     class LoginRequest
     {
         [Required]
         [StringLength(11, ErrorMessage = "Phone number must be 11 digits.")]
-        public string PhoneNumber { get; set; }  
+        public string? PhoneNumber { get; set; }  
         
         [Required]
         [MinLength(6, ErrorMessage = "Minimum length of password must be 6 character at least.")]
-        public string Password { get; set; }    
+        public string? Password { get; set; }    
     }
 
     [SupplyParameterFromForm]
@@ -50,10 +53,16 @@
 
     protected override void OnInitialized() => Model ??= new();
 
-    private void ProcessLogin()
+    private async Task ProcessLogin()
     {
-        Console.WriteLine("PhoneNumber: " + Model?.PhoneNumber ?? "-");
+        var result = await Http.PostAsJsonAsync("/users/api/account/login", Model);
+        var response = await result.Content.ReadFromJsonAsync<TokenResponse>();
+
+        await LocalStorage.SetItemAsync("loginData", response);
+        await LocalStorage.SetItemAsStringAsync("token", response!.AccessToken);
+        
+        await AuthStateProvider.GetAuthenticationStateAsync();
+        
         NavigationManager.NavigateTo("/");
     }
-    
 }

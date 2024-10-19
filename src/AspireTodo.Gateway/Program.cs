@@ -20,7 +20,6 @@ var (routes, clusters) = ProxyBuilder.Create()
     .AddRoute("users", "http://users")
     .AddRoute("todos", "http://todos")
     .AddRoute("textCompletion", "http://textCompletion")
-    // .AddSignalRRoute("notifications", "http://notifications")
     .AddRoute("notifications", "http://notifications")
     .Build();
 

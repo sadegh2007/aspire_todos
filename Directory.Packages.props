@@ -8,11 +8,13 @@
     <PackageVersion Include="Aspire.Hosting.NodeJs" Version="8.2.1" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.1" />
     <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="8.2.1" />
+    <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageVersion Include="EntityFrameworkCore.Projectables" Version="3.0.4" />
     <PackageVersion Include="EntityFrameworkCore.Projectables.Abstractions" Version="3.0.4" />
-    <PackageVersion Include="MassTransit.EntityFrameworkCore" Version="8.2.5" />
+    <PackageVersion Include="MassTransit.EntityFrameworkCore" Version="8.3.0" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Compliance.Redaction" Version="8.9.1" />
     <PackageVersion Include="Microsoft.Extensions.Http.Diagnostics" Version="8.10.0" />
@@ -46,16 +48,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
     <!-- Masstransit packages -->
-    <PackageVersion Include="MassTransit.RabbitMQ" Version="8.2.5" />
-    <PackageVersion Include="MassTransit.Abstractions" Version="8.2.5" />
-    <PackageVersion Include="MassTransit.Analyzers" Version="8.2.5">
+    <PackageVersion Include="MassTransit.RabbitMQ" Version="8.3.0" />
+    <PackageVersion Include="MassTransit.Abstractions" Version="8.3.0" />
+    <PackageVersion Include="MassTransit.Analyzers" Version="8.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
     <!-- Aspire packages-->
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.1" />
     <!-- EF packages -->
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="8.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="8.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
@@ -93,9 +95,9 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
     <!-- Swagger packages -->
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.8.1" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.1" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.9.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.9.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
     <PackageVersion Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
     <!-- Parbad packages-->

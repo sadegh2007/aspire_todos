@@ -7,9 +7,9 @@ public static class DependencyInjection
 {
     private const string HttpClientName = "todos-http";
 
-    public static IServiceCollection AddTodosHttpClients(this IServiceCollection services)
+    public static IServiceCollection AddTodosHttpClients(this IServiceCollection services, string? url = null)
     {
-        services.AddHttpClient(HttpClientName, client => client.BaseAddress = new Uri("http://todos"));
+        services.AddHttpClient(HttpClientName, client => client.BaseAddress = new Uri(url ?? "http://todos"));
 
         var settings = new RefitSettings();
 

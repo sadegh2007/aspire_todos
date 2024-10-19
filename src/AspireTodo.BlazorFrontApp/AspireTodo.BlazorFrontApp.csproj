@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\AspireTodo.Todos.HttpClient\AspireTodo.Todos.HttpClient.csproj" />
+      <ProjectReference Include="..\AspireTodo.Todos.Shared\AspireTodo.Todos.Shared.csproj" />
+      <ProjectReference Include="..\AspireTodo.UserManagement.Shared\AspireTodo.UserManagement.Shared.csproj" />
+    </ItemGroup>
+</Project>

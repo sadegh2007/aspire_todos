@@ -1,4 +1,4 @@
-@HostAddress = http://localhost:63571
+@HostAddress = http://localhost:5239
 
 POST {{HostAddress}}/api/account/login
 Accept: application/json

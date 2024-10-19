@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var rabbitMq = builder.AddRabbitMQ("EventBus")
-    .WithImageTag("4.0.2-alpine");
-
 var pgMountDir = builder.Configuration.GetValue<string>("PG_MOUNT_DIR")!;
+var rbMountDir = builder.Configuration.GetValue<string>("RB_MOUNT_DIR")!;
+
+var rabbitMq = builder.AddRabbitMQ("EventBus")
+    .WithImageTag("4.0.2-alpine")
+    .WithDataBindMount(rbMountDir);
 
 var postgres = builder.AddPostgres("postgres", password: builder.CreateStablePassword("postgres-password"))
     .WithImage("postgis/postgis", "17-3.5-alpine")
@@ -36,8 +38,9 @@ var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
     .WithExternalHttpEndpoints()
     .WithEnvironment("VITE_API_BASE_PATH", "http://localhost:8080");
 
-var blazorApp = builder.AddProject<Projects.AspireTodo_BlazorApp>("blazorApp")
-    .WithExternalHttpEndpoints();
+var blazorFrontApp = builder.AddProject<Projects.AspireTodo_BlazorFrontApp>("blazorFrontApp")
+    .WithExternalHttpEndpoints()
+    .WithEnvironment("API_URL", "http://localhost:8080");
 
 builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
@@ -46,6 +49,6 @@ builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
     .WithReference(todosService)
     .WithReference(aiTextCompletion)
     .WithReference(reactApp)
-    .WithReference(blazorApp);
+    .WithReference(blazorFrontApp);
 
 builder.Build().Run();

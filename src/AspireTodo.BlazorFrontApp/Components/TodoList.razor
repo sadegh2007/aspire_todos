@@ -1,0 +1,26 @@
+@using AspireTodo.Todos.Shared
+
+<ul className="todos-list mt-3 border border-gray-800 rounded-lg p-3">
+
+    @if (Todos?.Count == 0)
+    {
+        <li class="text-center text-gray-600">There is no todos</li>
+    }
+    
+    @foreach(var todo in Todos!)
+    {
+        <TodoListItem Todo="todo" InEditMode="false" />
+    }
+</ul>
+
+
+@code {
+    [Parameter]
+    public List<TodoDto>? Todos { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Todos = [];
+        base.OnInitialized();
+    }
+}
