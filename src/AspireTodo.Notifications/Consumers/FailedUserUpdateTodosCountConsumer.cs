@@ -1,6 +1,6 @@
 using System.Text.Json;
 using AspireTodo.Notifications.Hubs;
-using AspireTodo.Notifications.Models;
+using AspireTodo.Notifications.Shared;
 using AspireTodo.UserManagement.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;

@@ -1,6 +1,6 @@
 using AspireTodo.Core.Identity;
 using AspireTodo.Notifications.Hubs;
-using AspireTodo.Notifications.Models;
+using AspireTodo.Notifications.Shared;
 using Microsoft.AspNetCore.SignalR;
 
 namespace AspireTodo.Notifications;

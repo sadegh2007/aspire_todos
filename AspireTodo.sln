@@ -60,6 +60,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.Notifications", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.BlazorFrontApp", "src\AspireTodo.BlazorFrontApp\AspireTodo.BlazorFrontApp.csproj", "{88F19E07-5B38-4FBA-B225-CDE564175C95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireTodo.Notifications.Shared", "src\AspireTodo.Notifications.Shared\AspireTodo.Notifications.Shared.csproj", "{08453377-5F6F-4ED9-BB88-26AD9034AE04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{88F19E07-5B38-4FBA-B225-CDE564175C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88F19E07-5B38-4FBA-B225-CDE564175C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88F19E07-5B38-4FBA-B225-CDE564175C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08453377-5F6F-4ED9-BB88-26AD9034AE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08453377-5F6F-4ED9-BB88-26AD9034AE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08453377-5F6F-4ED9-BB88-26AD9034AE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08453377-5F6F-4ED9-BB88-26AD9034AE04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C4547682-0D53-424A-A58F-37CD330C5EAF} = {55FC2779-17C8-420E-A706-9D8D9D0F9B18}
@@ -185,5 +191,6 @@ Global
 		{09F5FE18-B8E6-4790-9581-7B8EF578695A} = {2E684270-DD65-45F5-BA4A-B0CB6D3281DC}
 		{255EABFE-060D-4839-82B6-6F06F4B43DC3} = {2975531B-814F-4DD8-AA4A-EF083E4EF240}
 		{88F19E07-5B38-4FBA-B225-CDE564175C95} = {3EEA0208-2F5D-49E2-9556-94B134BE13B8}
+		{08453377-5F6F-4ED9-BB88-26AD9034AE04} = {2975531B-814F-4DD8-AA4A-EF083E4EF240}
 	EndGlobalSection
 EndGlobal

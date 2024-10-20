@@ -4,6 +4,7 @@
       <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj" />
       <ProjectReference Include="..\AspireTodo.Core.OpenApi\AspireTodo.Core.OpenApi.csproj" />
+      <ProjectReference Include="..\AspireTodo.Notifications.Shared\AspireTodo.Notifications.Shared.csproj" />
       <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
       <ProjectReference Include="..\AspireTodo.Todos.HttpClient\AspireTodo.Todos.HttpClient.csproj" />
       <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj" />

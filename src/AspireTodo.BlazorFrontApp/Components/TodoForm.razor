@@ -3,6 +3,7 @@
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
 @inject ILocalStorageService LocalStorage
 @inject IToastService Toast
+@inject NavigationManager Navigation
 
 <EditForm OnValidSubmit="SubmitTodo" Model="Todo" FormName="TodoForm" class="">
     <DataAnnotationsValidator />
@@ -16,7 +17,16 @@
             />
             <ValidationMessage For="@(() => Todo!.Title)"></ValidationMessage>
         </label>
-        <button disabled="@Loading" type="submit" class="btn btn-primary ml-2">Add</button>
+        <button disabled="@Loading" type="submit" class="btn btn-primary ml-2">
+            @if(Loading)
+            {
+                <span class="loading loading-spinner"></span>
+            }
+            @if (!Loading)
+            {
+                @:Add
+            }
+        </button>
     </div>
     <label class="form-control w-full">
         <InputTextArea
@@ -39,6 +49,7 @@
     {
         Todo ??= new();
     }
+    
 
     private async Task SubmitTodo()
     {
@@ -52,6 +63,9 @@
                 Title = Todo!.Title!,
                 Summery = Todo.Summery
             }, token);
+
+            // Clear Form
+            Todo = new();
         }
         catch (Exception ex)
         {
@@ -60,7 +74,7 @@
 
         Loading = false;
     }
-    
+
     public class UpsertTodoRequest
     {
         [Required]

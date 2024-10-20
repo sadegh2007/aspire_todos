@@ -1,11 +1,21 @@
 ﻿@page "/"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using System.Text.Json.Serialization.Metadata
 @using AspireTodo.BlazorFrontApp.Components
+@using AspireTodo.Core.Shared
 @using AspireTodo.Todos.Shared
 @using Gridify
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inject ILocalStorageService LocalStorage
 @inject IToastService Toast
+@using AspireTodo.Todos.Events
+@using AspireTodo.UserManagement.Events
+@using AspireTodo.UserManagement.Shared
+@using Microsoft.AspNetCore.Http.Connections
+@using Microsoft.AspNetCore.SignalR.Client
+@implements IAsyncDisposable
 
 <PageTitle>TodosList - Home</PageTitle>
 
@@ -22,23 +32,44 @@
                 <span class="loading loading-spinner"></span>
             </div>
         }
-        <TodoList Todos="Todos" Loading="Loading" />
+        <TodoList Todos="@Todos" Loading="@Loading" />
     </div>
 </div>
 
 @code
 {
-    public List<TodoDto> Todos { get; set; } = [];
-    public bool Loading { get; set; } = true;
+    private const int PageCount = 10;
+    
+    private List<TodoDto> Todos { get; set; } = [];
+    private bool Loading { get; set; } = true;
+    private HubConnection? HubConnection { get; set; }
     
     protected override async Task OnInitializedAsync()
+    {
+        await StartHubConnection();
+        ConnectionDataListener();
+
+        await LoadData();
+        
+        await base.OnInitializedAsync();
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (HubConnection is not null)
+        {
+            await HubConnection.DisposeAsync();
+        }
+    }
+
+    private async Task LoadData()
     {
         Loading = true;
         
         try
         {
             var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
-            var result = await TodoApi.ListAsync(new GridifyQuery(1, 100, ""), token);
+            var result = await TodoApi.ListAsync(new GridifyQuery(1, PageCount, ""), token);
 
             Todos = result.Data.ToList();
         }
@@ -48,7 +79,92 @@
         }
 
         Loading = false;
+    }
+    
+    private async Task StartHubConnection()
+    {
+        var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+        var hubUrl = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:8080";
         
-        await base.OnInitializedAsync();
+        HubConnection = new HubConnectionBuilder()
+            // .WithUrl(Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:8080")
+            .WithUrl(hubUrl + "/notifications/todosHub", options =>
+            {
+                options.AccessTokenProvider = async () => await Task.FromResult(token);
+                options.SkipNegotiation = false;
+                options.Transports = HttpTransportType.WebSockets;
+            })
+            .WithAutomaticReconnect()
+            .Build();
+        
+        await HubConnection.StartAsync();
+    }
+
+    private void ConnectionDataListener()
+    {
+        HubConnection!.On<NotificationDataResponse>("ReceiveMessage", async (data) =>
+        {
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            try
+            {
+                if (data.Type == "TodoCreated")
+                {
+                    var result = JsonSerializer.Deserialize<TodoCreated>(JsonSerializer.Serialize(data.Data), jsonOptions)!;
+                    
+                    Todos.Insert(0, result.Todo);
+                    if (result.UserTodosCount >= PageCount)
+                    {
+                        Todos.RemoveAt(Todos.Count-1);
+                    }
+                    
+                    Toast.ShowSuccess("Todo created successfully.");
+                }
+
+                if (data.Type == "FailedUserUpdateTodosCount")
+                {
+                    var result = JsonSerializer.Deserialize<FailedUserUpdateTodosCount>(JsonSerializer.Serialize(data.Data), jsonOptions)!;
+                    Toast.ShowError(result.Message ?? "There is problem to add todo, please try again.");
+                }
+
+                if (data.Type == "TodoRemoved")
+                {
+                    var result = JsonSerializer.Deserialize<TodoRemoved>(JsonSerializer.Serialize(data.Data), jsonOptions)!;
+
+                    if (Todos.Count < PageCount)
+                    {
+                        var todo = Todos.FirstOrDefault(x => x.Id == result.TodoId);
+                        if (todo != null)
+                        {
+                            Todos.Remove(todo);
+                        }
+                    }
+                    else
+                    {
+                        await LoadData();
+                    }
+                    
+                    Toast.ShowSuccess("Todo Removed Successfully");
+                }
+
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        });
+    }
+
+    class NotificationDataResponse
+    {
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("data")]
+        public object Data { get; set; }
     }
 }

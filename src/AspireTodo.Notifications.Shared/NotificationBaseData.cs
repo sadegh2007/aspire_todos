@@ -1,4 +1,4 @@
-namespace AspireTodo.Notifications.Models;
+namespace AspireTodo.Notifications.Shared;
 
 public class NotificationBaseData<TData> where TData : class
 {
