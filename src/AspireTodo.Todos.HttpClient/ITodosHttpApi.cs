@@ -20,4 +20,7 @@ public interface ITodosHttpApi
 
     [Delete("/api/todos/{id}")]
     public Task RemoveAsync(int id, [Authorize] string token);
+    
+    [Put("/api/todos/{id}/completed")]
+    public Task MarkCompletedAsync(int id, [Body] MarkAsCompletedRequest request, [Authorize] string token);
 }

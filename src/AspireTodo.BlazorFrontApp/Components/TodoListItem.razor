@@ -7,12 +7,19 @@
 <li class="relative py-3 border-b border-gray-800 flex items-center">
     @if (!InEditMode)
     {
-        <input
-            type="radio"
-            class="radio focus:outline-0"
-            @bind="Todo.IsCompleted"
-            checked="@(Todo.IsCompleted)"
-        />
+        @if (!Loading)
+        {
+            <input
+                type="radio"
+                class="radio focus:outline-0"
+                @onclick="MarkCompleted"
+                checked="@(Todo.IsCompleted)"
+            />  
+        }
+        else
+        {
+            <span class="loading loading-spinner"></span>
+        }
     }
     <div class="@(!InEditMode ? "mx-4" : "") flex flex-col w-full">
         @if (!InEditMode)
@@ -23,7 +30,7 @@
                 <small>@Todo.Summery</small>
             }
         }
-        @if (InEditMode)
+        else
         {
             <TodoForm @bind-UpdateDto="@Todo" @bind-IsEdit="@InEditMode" />
         }
@@ -37,7 +44,7 @@
                 {
                     <span class="loading loading-sm loading-spinner"></span>
                 }
-                @if (!Loading) 
+                else
                 {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                          fill="none"
@@ -52,16 +59,19 @@
                     </svg>
                 }
             </button>
-            <button @onclick="OnEdit" disabled="@Loading"
-                    class="focus:outline-0 btn btn-square btn-sm btn-success">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                     class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
-                    <path d="M13.5 6.5l4 4"/>
-                </svg>
-            </button>
+            @if (!Todo.IsCompleted)
+            {
+                <button @onclick="OnEdit" disabled="@Loading"
+                        class="focus:outline-0 btn btn-square btn-sm btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
+                        <path d="M13.5 6.5l4 4"/>
+                    </svg>
+                </button>
+            }
         </div>
     }
 </li>
@@ -70,10 +80,31 @@
     [Parameter] 
     public TodoDto Todo { get; set; }
     
-    [Parameter] 
     public bool InEditMode { get; set; }
 
     private bool Loading { get; set; }
+
+    private async Task MarkCompleted()
+    {
+        Loading = true;
+        
+        try
+        {
+            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            await TodosHttpApi.MarkCompletedAsync(Todo.Id.Value, new MarkAsCompletedRequest
+            {
+                IsCompleted = !Todo.IsCompleted
+            }, token);
+
+            Todo.IsCompleted = !Todo.IsCompleted;
+        }
+        catch (Exception ex)
+        {
+            Toast.ShowError(ex.Message);
+        }
+
+        Loading = false;
+    }
 
     private async Task RemoveAsync()
     {
