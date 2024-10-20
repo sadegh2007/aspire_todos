@@ -15,6 +15,9 @@ public interface ITodosHttpApi
     [Post("/api/todos")]
     public Task CreateAsync([Body] UpsertTodoRequest request, [Authorize] string token);
 
+    [Put("/api/todos/{id}")]
+    public Task UpdateAsync(int id, [Body] UpsertTodoRequest request, [Authorize] string token);
+
     [Delete("/api/todos/{id}")]
     public Task RemoveAsync(int id, [Authorize] string token);
 }

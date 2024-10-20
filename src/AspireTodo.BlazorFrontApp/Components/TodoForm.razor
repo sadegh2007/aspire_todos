@@ -1,4 +1,5 @@
 @using System.ComponentModel.DataAnnotations
+@using AspireTodo.Todos.Shared
 @inject HttpClient Http
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
 @inject ILocalStorageService LocalStorage
@@ -24,7 +25,7 @@
             }
             @if (!Loading)
             {
-                @:Add
+                @(!IsEdit?"Add":"Update")
             }
         </button>
     </div>
@@ -43,14 +44,30 @@
     [SupplyParameterFromForm]
     public UpsertTodoRequest? Todo { get; set; }
 
+    [Parameter] public TodoDto? UpdateDto { get; set; }
+    [Parameter] public EventCallback<TodoDto> UpdateDtoChanged { get; set; }
+
+    [Parameter] public bool IsEdit { get; set; }
+    [Parameter] public EventCallback<bool> IsEditChanged { get; set; }
+
     private bool Loading { get; set; }
     
     protected override void OnInitialized()
     {
-        Todo ??= new();
+        if (UpdateDto != null)
+        {
+            Todo = new UpsertTodoRequest
+            {
+                Title = UpdateDto.Title,
+                Summery = UpdateDto.Summery
+            };
+        }
+        else
+        {
+            Todo ??= new();
+        }
     }
     
-
     private async Task SubmitTodo()
     {
         Loading = true;
@@ -58,12 +75,31 @@
         try
         {
             var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
-            await TodoApi.CreateAsync(new()
-            {
-                Title = Todo!.Title!,
-                Summery = Todo.Summery
-            }, token);
 
+            if (IsEdit)
+            {
+                await TodoApi.UpdateAsync(UpdateDto!.Id.Value, new()
+                {
+                    Title = Todo!.Title!,
+                    Summery = Todo.Summery
+                }, token);
+                
+                UpdateDto.Title = Todo.Title!;
+                UpdateDto.Summery = Todo.Summery;
+                await UpdateDtoChanged.InvokeAsync(UpdateDto);
+                
+                IsEdit = false;
+                await IsEditChanged.InvokeAsync(IsEdit);
+            }
+            else
+            {
+                await TodoApi.CreateAsync(new()
+                {
+                    Title = Todo!.Title!,
+                    Summery = Todo.Summery
+                }, token);
+            }
+            
             // Clear Form
             Todo = new();
         }
