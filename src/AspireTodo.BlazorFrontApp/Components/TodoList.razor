@@ -2,6 +2,13 @@
 
 <ul class="todos-list mt-3 border border-gray-800 rounded-lg p-3">
 
+    @if (Loading)
+    {
+        <li class="text-center">
+            <span class="loading loading-spinner"></span>
+        </li>
+    }
+
     @if (!Loading && Todos?.Count == 0)
     {
         <li class="text-center text-gray-600">There is no todos</li>
