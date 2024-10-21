@@ -6,28 +6,19 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AspireTodo.BlazorFrontApp.Common.Auth;
 
-public class CustomAuthStateProvider : AuthenticationStateProvider
+public class CustomAuthStateProvider(ILocalStorageService localStorage, HttpClient http) : AuthenticationStateProvider
 {
-    private readonly ILocalStorageService _localStorage;
-    private readonly HttpClient _http;
-
-    public CustomAuthStateProvider(ILocalStorageService localStorage, HttpClient http)
-    {
-        _localStorage = localStorage;
-        _http = http;
-    }
-
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string token = await _localStorage.GetItemAsStringAsync("token");
+        string token = await localStorage.GetItemAsStringAsync("token");
 
         var identity = new ClaimsIdentity();
-        _http.DefaultRequestHeaders.Authorization = null;
+        http.DefaultRequestHeaders.Authorization = null;
 
         if (!string.IsNullOrEmpty(token))
         {
             identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-            _http.DefaultRequestHeaders.Authorization =
+            http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
         }
 

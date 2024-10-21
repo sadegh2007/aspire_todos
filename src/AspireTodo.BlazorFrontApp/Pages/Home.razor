@@ -1,18 +1,18 @@
 ﻿@page "/"
+@using System.Net
 @using System.Text.Json
 @using System.Text.Json.Serialization
-@using System.Text.Json.Serialization.Metadata
+@using AspireTodo.BlazorFrontApp.Common.Auth
 @using AspireTodo.BlazorFrontApp.Components
-@using AspireTodo.Core.Shared
 @using AspireTodo.Todos.Shared
 @using Gridify
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
+@inject NavigationManager NavManager
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
-@inject ILocalStorageService LocalStorage
 @inject IToastService Toast
+@inject ITokenAccessor TokenAccessor
 @using AspireTodo.Todos.Events
 @using AspireTodo.UserManagement.Events
-@using AspireTodo.UserManagement.Shared
 @using Microsoft.AspNetCore.Http.Connections
 @using Microsoft.AspNetCore.SignalR.Client
 @implements IAsyncDisposable
@@ -58,13 +58,24 @@
     private async Task LoadData()
     {
         Loading = true;
-        
+
         try
         {
-            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            var token = (await TokenAccessor.GetToken())!;
             var result = await TodoApi.ListAsync(new GridifyQuery(1, PageCount, ""), token);
 
             Todos = result.Data.ToList();
+        }
+        catch (Refit.ApiException apiException)
+        {
+            if (apiException.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                NavManager.NavigateTo("/login");
+            }
+            else
+            {
+                throw;
+            }
         }
         catch (Exception ex)
         {
@@ -76,7 +87,7 @@
     
     private async Task StartHubConnection()
     {
-        var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+        var token = (await TokenAccessor.GetToken())!;
         var hubUrl = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:8080";
         
         HubConnection = new HubConnectionBuilder()

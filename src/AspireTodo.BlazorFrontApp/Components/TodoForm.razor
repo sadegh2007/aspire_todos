@@ -1,8 +1,9 @@
 @using System.ComponentModel.DataAnnotations
+@using AspireTodo.BlazorFrontApp.Common.Auth
 @using AspireTodo.Todos.Shared
 @inject HttpClient Http
 @inject Todos.HttpClient.ITodosHttpApi TodoApi
-@inject ILocalStorageService LocalStorage
+@inject ITokenAccessor TokenAccessor
 @inject IToastService Toast
 @inject NavigationManager Navigation
 
@@ -74,7 +75,7 @@
         
         try
         {
-            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            var token = (await TokenAccessor.GetToken())!;
 
             if (IsEdit)
             {

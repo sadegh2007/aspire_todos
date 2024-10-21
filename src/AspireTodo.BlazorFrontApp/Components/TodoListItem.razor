@@ -1,8 +1,9 @@
+@using AspireTodo.BlazorFrontApp.Common.Auth
 @using AspireTodo.Todos.HttpClient
 @using AspireTodo.Todos.Shared
 @inject IToastService Toast
 @inject ITodosHttpApi TodosHttpApi
-@inject ILocalStorageService LocalStorage
+@inject ITokenAccessor TokenAccessor
 
 <li class="relative py-3 border-b border-gray-800 flex items-center">
     @if (!InEditMode)
@@ -90,7 +91,7 @@
         
         try
         {
-            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            var token = (await TokenAccessor.GetToken())!;
             await TodosHttpApi.MarkCompletedAsync(Todo.Id.Value, new MarkAsCompletedRequest
             {
                 IsCompleted = !Todo.IsCompleted
@@ -112,7 +113,7 @@
         
         try
         {
-            var token = (await LocalStorage.GetItemAsStringAsync("token"))!;
+            var token = (await TokenAccessor.GetToken())!;
             await TodosHttpApi.RemoveAsync(Todo.Id.Value, token);
         }
         catch (Exception ex)

@@ -1,12 +1,12 @@
 @page "/login"
 @using System.ComponentModel.DataAnnotations
-@using AspireTodo.UserManagement.Shared
+@using AspireTodo.UserManagement.HttpClient
 @inject NavigationManager NavigationManager
 @attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
-@inject HttpClient Http
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService Toast
+@inject IAccountsHttpApi AccountsHttpApi
 
 <PageTitle>TodosList - Login</PageTitle>
 
@@ -69,8 +69,11 @@
         
         try
         {
-            var result = await Http.PostAsJsonAsync("/users/api/account/login", Model);
-            var response = await result.Content.ReadFromJsonAsync<TokenResponse>();
+            var response = await AccountsHttpApi.LoginAsync(new UserManagement.Shared.LoginRequest
+            {
+                PhoneNumber = Model!.PhoneNumber!,
+                Password = Model!.Password!
+            });
 
             await LocalStorage.SetItemAsync("loginData", response);
             await LocalStorage.SetItemAsStringAsync("token", response!.AccessToken);
