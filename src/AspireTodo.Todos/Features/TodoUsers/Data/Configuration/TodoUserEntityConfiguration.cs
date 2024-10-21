@@ -1,5 +1,5 @@
 using AspireTodo.Core.Shared;
-using AspireTodo.Todos.Features.TodoUsers.Domains;
+using AspireTodo.Todos.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,8 +1,7 @@
 using AspireTodo.Core.Data.Abstractions;
 using AspireTodo.Core.Shared;
-using AspireTodo.Todos.Features.TodoUsers.Domains;
 
-namespace AspireTodo.Todos.Features.Todos.Domains;
+namespace AspireTodo.Todos.Domain;
 
 public class Todo: IModel<TodoId>, ICreatedAt, IUpdatedAt, ISoftDelete
 {

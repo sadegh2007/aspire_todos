@@ -1,4 +1,4 @@
-using AspireTodo.Todos.Features.Todos.Domains;
+using AspireTodo.Todos.Domain;
 using AspireTodo.Todos.Shared;
 using EntityFrameworkCore.Projectables;
 

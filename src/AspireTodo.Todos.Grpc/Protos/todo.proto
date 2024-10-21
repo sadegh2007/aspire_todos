@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+option csharp_namespace = "AspireTodo.Todos.Grpc";
+
+package greet;
+
+service TodoIt {
+  rpc CreateTodo(TodoCreateRequest) returns(TodoCreateResponse);
+  rpc Get(TodoGetRequest) returns(TodoGetResponse);
+  rpc List(TodoListRequest) returns(TodoListResponse);
+  rpc Update(TodoUpdateRequest) returns(TodoUpdateResponse);
+  rpc Remove(TodoRemoveRequest) returns(TodoRemoveResponse);
+}
+
+// Create
+message TodoCreateRequest {
+  string title = 1;
+  optional string summery = 2;
+}
+
+message TodoCreateResponse {}
+
+// Get
+message TodoGetRequest {
+  int32 id = 1;
+}
+
+message TodoGetResponse {
+  string title = 1;
+  optional string summery = 2;
+  string createdAt = 3;
+  bool isCompleted = 4;
+}
+
+// List
+message TodoListRequest {
+  optional int32 page = 1;
+  optional int32 pageSize = 2;
+}
+
+message TodoListResponse {
+  repeated TodoGetResponse data = 1;
+  int32 count = 2;
+}
+
+// Update
+message TodoUpdateRequest {
+  int32 id = 1;
+  string title = 2;
+  optional string summery = 3;
+}
+
+message TodoUpdateResponse {}
+
+// Remove
+message TodoRemoveRequest {
+  int32 id = 1;
+}
+
+message TodoRemoveResponse {}

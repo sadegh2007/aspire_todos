@@ -1,9 +1,8 @@
 using System.Text.Json;
 using AspireTodo.Todos.Data;
+using AspireTodo.Todos.Domain;
 using AspireTodo.Todos.Events;
 using AspireTodo.Todos.Features.Todos.Data.Mappers;
-using AspireTodo.Todos.Features.Todos.Domains;
-using AspireTodo.Todos.Features.TodoUsers.Domains;
 using AspireTodo.UserManagement.HttpClient;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;

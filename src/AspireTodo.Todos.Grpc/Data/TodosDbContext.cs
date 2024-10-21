@@ -1,24 +1,14 @@
 using AspireTodo.Core.Data;
 using AspireTodo.Todos.Domain;
-using AspireTodo.Todos.StateMachines.Maps;
-using AspireTodo.Todos.StateMachines.States;
-using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using SagaDbContext = AspireTodo.Core.MassTransit.SagaDbContext;
 
-namespace AspireTodo.Todos.Data;
+namespace AspireTodo.Todos.Grpc.Data;
 
-public class TodosDbContext(DbContextOptions<TodosDbContext> options) : SagaDbContext(options)
+public class TodosDbContext(DbContextOptions<TodosDbContext> options) : DbContext(options)
 {
     public DbSet<Todo> Todos => Set<Todo>();
     public DbSet<TodoUser> TodoUsers => Set<TodoUser>();
-    public DbSet<TodoState> TodoStates => Set<TodoState>();
-
-    protected override IEnumerable<ISagaClassMap> Configurations
-    {
-        get { yield return new TodoStateMap(); }
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

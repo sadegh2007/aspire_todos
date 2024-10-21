@@ -1,8 +1,8 @@
+using AspireTodo.Core.Data.Abstractions;
 using AspireTodo.Core.Shared;
 using AspireTodo.UserManagement.Shared;
-using AspireTodo.Core.Data.Abstractions;
 
-namespace AspireTodo.Todos.Features.TodoUsers.Domains;
+namespace AspireTodo.Todos.Domain;
 
 public class TodoUser: IModel, ICreatedAt, IUpdatedAt
 {
