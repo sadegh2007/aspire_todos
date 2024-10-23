@@ -9,16 +9,19 @@ using Grpc.Core;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspireTodo.Todos.Grpc.Services;
+namespace AspireTodo.Todos.Grpc.GrpcServices;
 
 public class TodoService(
-    IHttpContextAccessor httpContextAccessor,
     TodosDbContext appDbContext,
     IPublishEndpoint publishEndpoint) : TodoIt.TodoItBase
 {
     public override async Task<TodoListResponse> List(TodoListRequest request, ServerCallContext context)
     {
-        var todos = await appDbContext.Todos.GridifyAsync(new GridifyQuery(request.Page, request.PageSize, ""), context.CancellationToken);
+        var userId = context.GetHttpContext().User.GetTypedUserId();
+
+        var todos = await appDbContext.Todos.AsNoTracking()
+            .Where(x => x.Creator.UserId == userId)
+            .GridifyAsync(new GridifyQuery(request.Page, request.PageSize, ""), context.CancellationToken);
 
         var list = new RepeatedField<TodoGetResponse>();
         list.AddRange(todos.Data.Select(todo => new TodoGetResponse
@@ -61,8 +64,8 @@ public class TodoService(
 
     public override async Task<TodoCreateResponse> CreateTodo(TodoCreateRequest request, ServerCallContext context)
     {
-        var userId = httpContextAccessor.HttpContext!.User.GetTypedUserId()!.Value;
-        var authToken = httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString()
+        var userId = context.GetHttpContext().User.GetTypedUserId()!.Value;
+        var authToken = context.GetHttpContext().Request.Headers["Authorization"].ToString()
             .Replace("Bearer ", "");
 
         await publishEndpoint.Publish<TodoCreating>(new(request.Title, request.Summery, userId, authToken),
@@ -85,14 +88,14 @@ public class TodoService(
         appDbContext.Todos.Update(todo);
         await appDbContext.SaveChangesAsync(context.CancellationToken);
 
-        return new();
+        return new TodoUpdateResponse();
     }
 
     public override async Task<TodoRemoveResponse> Remove(TodoRemoveRequest request, ServerCallContext context)
     {
-        var userId = httpContextAccessor.HttpContext!.User.GetTypedUserId()!.Value;
+        var userId = context.GetHttpContext().User.GetTypedUserId()!.Value;
         await publishEndpoint.Publish<TodoRemoving>(new(TodoId.FromInt32(request.Id), userId), context.CancellationToken);
 
-        return new();
+        return new TodoRemoveResponse();
     }
 }

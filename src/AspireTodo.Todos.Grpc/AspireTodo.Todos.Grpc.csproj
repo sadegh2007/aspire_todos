@@ -5,12 +5,17 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore"/>
+        <PackageReference Include="Grpc.Tools">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\AspireTodo.Core.Data\AspireTodo.Core.Data.csproj"/>
         <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj"/>
         <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj"/>
+        <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
         <ProjectReference Include="..\AspireTodo.Todos.Domain\AspireTodo.Todos.Domain.csproj"/>
         <ProjectReference Include="..\AspireTodo.Todos.Events\AspireTodo.Todos.Events.csproj"/>
     </ItemGroup>

@@ -47,6 +47,14 @@ public static class Extensions
         return builder;
     }
 
+    public static IHostApplicationBuilder AddBasicServiceDefaults(this IHostApplicationBuilder builder)
+    {
+        builder.ConfigureOpenTelemetry();
+        builder.AddDefaultHealthChecks();
+
+        return builder;
+    }
+
     public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>

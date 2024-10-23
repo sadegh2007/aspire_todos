@@ -1,5 +1,6 @@
 using AspireTodo.AppHost;
 using Microsoft.Extensions.Configuration;
+using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -18,37 +19,43 @@ var userDb = postgres.AddDatabase("UsersDb");
 var todosDb = postgres.AddDatabase("TodosDb");
 var notificationsDb = postgres.AddDatabase("notificationsDb");
 
-var notificationsService = builder.AddProject<Projects.AspireTodo_Notifications>("notifications")
+var notificationsService = builder.AddProject<AspireTodo_Notifications>("notifications")
     .WithReference(notificationsDb)
     .WithReference(rabbitMq);
 
-var usersService = builder.AddProject<Projects.AspireTodo_UserManagement>("users")
+var usersService = builder.AddProject<AspireTodo_UserManagement>("users")
     .WithReference(userDb)
     .WithReference(rabbitMq);
 
-var todosService = builder.AddProject<Projects.AspireTodo_Todos>("todos")
+var todosService = builder.AddProject<AspireTodo_Todos>("todos")
     .WithReference(todosDb)
     .WithReference(rabbitMq)
     .WithReference(usersService);
 
-var aiTextCompletion = builder.AddProject<Projects.AspireTodo_Ai_TextCompletion>("textCompletion")
+var todoGrpcService = builder.AddProject<AspireTodo_Todos_Grpc>("todosGrpc")
+    .WithReference(todosDb)
+    .WithReference(rabbitMq)
+    .WithHttpsEndpoint();
+
+var aiTextCompletion = builder.AddProject<AspireTodo_Ai_TextCompletion>("textCompletion")
     .WithReference(todosService);
 
 var reactApp = builder.AddNpmApp("reactApp", "../AspireTodo.ReactApp/", "dev")
     .WithExternalHttpEndpoints()
     .WithEnvironment("VITE_API_BASE_PATH", "http://localhost:8080");
 
-var blazorFrontApp = builder.AddProject<Projects.AspireTodo_BlazorFrontApp>("blazorFrontApp")
+var blazorFrontApp = builder.AddProject<AspireTodo_BlazorFrontApp>("blazorFrontApp")
     .WithExternalHttpEndpoints()
     .WithEnvironment("API_URL", "http://localhost:8080");
 
-builder.AddProject<Projects.AspireTodo_Gateway>("gateway")
+builder.AddProject<AspireTodo_Gateway>("gateway")
     .WithExternalHttpEndpoints()
     .WithReference(notificationsService)
     .WithReference(usersService)
     .WithReference(todosService)
     .WithReference(aiTextCompletion)
     .WithReference(reactApp)
-    .WithReference(blazorFrontApp);
+    .WithReference(blazorFrontApp)
+    .WithReference(todoGrpcService);
 
 builder.Build().Run();

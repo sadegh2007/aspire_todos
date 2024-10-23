@@ -7,19 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AspireTodo.Ai.TextCompletion\AspireTodo.Ai.TextCompletion.csproj" />
-      <ProjectReference Include="..\AspireTodo.BlazorFrontApp\AspireTodo.BlazorFrontApp.csproj" />
-      <ProjectReference Include="..\AspireTodo.Gateway\AspireTodo.Gateway.csproj" />
-      <ProjectReference Include="..\AspireTodo.Notifications\AspireTodo.Notifications.csproj" />
-      <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj" />
-      <ProjectReference Include="..\AspireTodo.UserManagement\AspireTodo.UserManagement.csproj" />
+        <ProjectReference Include="..\AspireTodo.Ai.TextCompletion\AspireTodo.Ai.TextCompletion.csproj"/>
+        <ProjectReference Include="..\AspireTodo.BlazorFrontApp\AspireTodo.BlazorFrontApp.csproj"/>
+        <ProjectReference Include="..\AspireTodo.Gateway\AspireTodo.Gateway.csproj"/>
+        <ProjectReference Include="..\AspireTodo.Notifications\AspireTodo.Notifications.csproj"/>
+        <ProjectReference Include="..\AspireTodo.Todos.Grpc\AspireTodo.Todos.Grpc.csproj"/>
+        <ProjectReference Include="..\AspireTodo.Todos\AspireTodo.Todos.csproj"/>
+        <ProjectReference Include="..\AspireTodo.UserManagement\AspireTodo.UserManagement.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Aspire.Hosting.AppHost" />
-      <PackageReference Include="Aspire.Hosting.NodeJs" />
-      <PackageReference Include="Aspire.Hosting.PostgreSQL" />
-      <PackageReference Include="Aspire.Hosting.RabbitMQ" />
+        <PackageReference Include="Aspire.Hosting.AppHost"/>
+        <PackageReference Include="Aspire.Hosting.NodeJs"/>
+        <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
+        <PackageReference Include="Aspire.Hosting.RabbitMQ"/>
     </ItemGroup>
 
 </Project>

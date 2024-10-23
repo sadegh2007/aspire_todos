@@ -1,5 +1,6 @@
 using AspireTodo.Gateway;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Yarp.ReverseProxy.Forwarder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
 var (routes, clusters) = ProxyBuilder.Create()
     .AddRoute("users", "http://users")
     .AddRoute("todos", "http://todos")
+    .AddRoute("todosGrpc", "https://todosGrpc")
     .AddRoute("textCompletion", "http://textCompletion")
     .AddRoute("notifications", "http://notifications")
     .Build();

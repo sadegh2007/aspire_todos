@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.Forwarder;
 
 namespace AspireTodo.Gateway;
 
@@ -15,7 +16,7 @@ public class ProxyBuilder
         return new ProxyBuilder();
     }
 
-    public ProxyBuilder AddRoute(string route, string targetUrl)
+    public ProxyBuilder AddRoute(string route, string targetUrl, ForwarderRequestConfig? httpRequest = null)
     {
         _routes.Add(new RouteConfig()
         {
@@ -35,6 +36,7 @@ public class ProxyBuilder
         _cluster.Add(new ClusterConfig()
         {
             ClusterId = "cluster/" + route,
+            HttpRequest = httpRequest,
             Destinations = new Dictionary<string, DestinationConfig>
             {
                 { "local", new DestinationConfig() { Address = targetUrl } }
