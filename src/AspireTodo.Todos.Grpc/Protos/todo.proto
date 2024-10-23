@@ -30,6 +30,7 @@ message TodoGetResponse {
   optional string summery = 2;
   string createdAt = 3;
   bool isCompleted = 4;
+  int32 id = 5;
 }
 
 // List

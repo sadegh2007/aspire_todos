@@ -35,7 +35,7 @@ var todosService = builder.AddProject<AspireTodo_Todos>("todos")
 var todoGrpcService = builder.AddProject<AspireTodo_Todos_Grpc>("todosGrpc")
     .WithReference(todosDb)
     .WithReference(rabbitMq)
-    .WithHttpsEndpoint();
+    .WithHttpsEndpoint(7046);
 
 var aiTextCompletion = builder.AddProject<AspireTodo_Ai_TextCompletion>("textCompletion")
     .WithReference(todosService);

@@ -16,6 +16,7 @@ public class EntityHelperSaveChangeInterceptor: SaveChangesInterceptor
                 case EntityState.Deleted:
                     if (entityEntry.Entity is ISoftDelete softDelete)
                     {
+                        entityEntry.State = EntityState.Modified;
                         softDelete.DeletedAt = DateTimeOffset.UtcNow;
                     }
 

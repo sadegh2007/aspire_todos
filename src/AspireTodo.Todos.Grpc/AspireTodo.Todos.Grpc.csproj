@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AspireTodo.Core.Data\AspireTodo.Core.Data.csproj"/>
+        <ProjectReference Include="..\AspireTodo.Core.ExceptionHandler\AspireTodo.Core.ExceptionHandler.csproj" />
         <ProjectReference Include="..\AspireTodo.Core.Identity\AspireTodo.Core.Identity.csproj"/>
         <ProjectReference Include="..\AspireTodo.Core.MassTransit\AspireTodo.Core.MassTransit.csproj"/>
         <ProjectReference Include="..\AspireTodo.ServiceDefaults\AspireTodo.ServiceDefaults.csproj" />
